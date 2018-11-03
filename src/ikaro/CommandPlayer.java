@@ -117,8 +117,7 @@ public class CommandPlayer extends Thread{
 			case PLAY_ON:
 				ballX=fieldPerc.getBall().getPosition().getX();
 				ballY=fieldPerc.getBall().getPosition().getY();
-				if(isPointsAreClose(selfPerc.getPosition(),
-						ballPos, 1)){
+				if(isPointsAreClose(selfPerc.getPosition(),ballPos, 1)){
 				// 	chutar
 					kickToPoint(new Vector2D(0,0), 100);
 				}else if(area.contains(ballX, ballY)){
