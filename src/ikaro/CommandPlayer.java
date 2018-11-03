@@ -137,21 +137,21 @@ public class CommandPlayer extends Thread {
 				commander.doMoveBlocking(xInit, yInit);
 				break;
 			case PLAY_ON:
-<<<<<<< HEAD
+
 				ballX=fieldPerc.getBall().getPosition().getX();
 				ballY=fieldPerc.getBall().getPosition().getY();
 				if(isPointsAreClose(selfPerc.getPosition(),ballPos, 1)){
 				// 	chutar
 					kickToPoint(new Vector2D(0,0), 100);
 				}else if(area.contains(ballX, ballY)){
-=======
+
 				ballX = fieldPerc.getBall().getPosition().getX();
 				ballY = fieldPerc.getBall().getPosition().getY();
 				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 					// chutar
 					kickToPoint(new Vector2D(0, 0), 100);
 				} else if (area.contains(ballX, ballY)) {
->>>>>>> f5b438db01f24cce1e97178daf722a09748a95fd
+
 					// defender
 					dash(ballPos);
 				} else if (!isPointsAreClose(selfPerc.getPosition(), initPos, 3)) {
@@ -161,7 +161,7 @@ public class CommandPlayer extends Thread {
 					// olhar para a bola
 					turnToPoint(ballPos);
 				}
-				break;
+				}
 			/* Todos os estados da partida */
 			default:
 				break;
