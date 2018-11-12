@@ -13,11 +13,21 @@ import simple_soccer_lib.utils.Vector2D;
 public class PlayerBase {
 	protected PlayerCommander commander;
 	public PlayerPerception selfPerc;
+	
 	protected FieldPerception fieldPerc;
 	protected MatchPerception matchPerc;
-	
+	public static boolean isBallPossession;
+
 	public PlayerBase(PlayerCommander player) {
 		commander = player;
+	}
+	
+	public boolean isBallPossession() {
+		return isBallPossession;
+	}
+
+	public void setBallPossession(boolean isBallPossession) {
+		PlayerBase.isBallPossession = isBallPossession;
 	}
 	
 	public void updatePerceptions() {

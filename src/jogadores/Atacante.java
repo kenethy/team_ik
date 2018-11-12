@@ -6,7 +6,7 @@ import simple_soccer_lib.utils.EFieldSide;
 import simple_soccer_lib.utils.Vector2D;
 
 public class Atacante extends PlayerBase{
-	
+
 	public Atacante(PlayerCommander player) {
 		super(player);
 		// TODO Auto-generated constructor stub
@@ -27,26 +27,40 @@ public class Atacante extends PlayerBase{
 				commander.doMoveBlocking(xInit, yInit);
 				break;
 			case PLAY_ON:
+				selfPerc.setReceiving(false);
+				if(isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)){ //se o time esta com a bola, mas EU NÃO estou com ela
+					System.out.println("Atacante: " + selfPerc.getUniformNumber()+selfPerc.isReceiving());
+					if (selfPerc.getUniformNumber() == 7 && !selfPerc.isReceiving()){
+						dash(new Vector2D(ballPos.getX() + 10, -15)); //acompanha a bola com companheiro
+					}
+					else if (selfPerc.getUniformNumber() == 6 && !selfPerc.isReceiving())//se nao for camisa 7, é o camisa 6 atacante, vai para o gol adversario
+						dash(new Vector2D(goalPos.getX() - 20, 15));
+					
+				} else{
 				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
+					setBallPossession(true);
+					selfPerc.setReceiving(false);
 					if (isPointsAreClose(ballPos, goalPos, 30)) {
 						// chuta para o gol
 						kickToPoint(goalPos, 100);
 					} else {
 						// conduz para o gol
-						kickToPoint(goalPos, 25);
+						kickToPoint(goalPos, 20);
 					}
 				} else {
 					pTemp = getClosestPlayerPoint(ballPos, side, 3);
-					if (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber()) {
+					if (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber() && selfPerc.isReceiving()) {
+						selfPerc.setReceiving(false);
 						// pega a bola
 						dash(ballPos);
 					} else if (!isPointsAreClose(selfPerc.getPosition(), initPos, 3)) {
 						// recua
-						dash(initPos);
+						//dash(initPos);
 					} else {
 						// olha para a bola
 						turnToPoint(ballPos);
 					}
+				}
 				}
 				break;
 			/* Todos os estados da partida */
