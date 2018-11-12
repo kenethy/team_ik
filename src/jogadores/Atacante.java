@@ -27,9 +27,7 @@ public class Atacante extends PlayerBase{
 				commander.doMoveBlocking(xInit, yInit);
 				break;
 			case PLAY_ON:
-				setPlayerRecebendo(-1);
 				if(isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)){ //se o time esta com a bola, mas EU NÃO estou com ela
-					System.out.println("Atacante: " + getPlayerRecebendo());
 					if (selfPerc.getUniformNumber() == 7 && getPlayerRecebendo() != 7){
 						dash(new Vector2D(ballPos.getX() + 10, -15)); //acompanha a bola com companheiro
 					}

@@ -35,14 +35,13 @@ public class Goleiro extends PlayerBase{
 				ballY=fieldPerc.getBall().getPosition().getY();
 				if(isPointsAreClose(selfPerc.getPosition(),ballPos, 1)){
 					
-				// 	chutar
-
-					setPlayerRecebendo(getClosestPlayerPoint(goalPos, selfPerc.getSide(), 2).getUniformNumber());
-					kickToPoint(getClosestPlayerPoint(goalPos, selfPerc.getSide(), 2).getPosition(), 100);
-
+				// 	chutar pro player mais perto 
+					setPlayerRecebendo(getClosestPlayerPoint(selfPerc.getPosition(), selfPerc.getSide(), 3).getUniformNumber());
+					kickToPoint(getClosestPlayerPoint(selfPerc.getPosition(), selfPerc.getSide(), 3).getPosition(), 100);
+					setBallPossession(true);
 					//getClosestPlayerPoint(selfPerc.getPosition(), selfPerc.getSide(), 2).setReceiving(true); 
 					//kickToPoint(getClosestPlayerPoint(selfPerc.getPosition(), selfPerc.getSide(), 2).getPosition(), 80);
-					setBallPossession(false);
+					
 					System.out.println("chutao1");
 					
 				} else if (area.contains(ballX, ballY)) {

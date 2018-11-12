@@ -26,16 +26,16 @@ public class Armador extends PlayerBase {
 				commander.doMoveBlocking(xInit, yInit);	
 				break;
 			case PLAY_ON:
-				setPlayerRecebendo(-1);
 					if(isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)){ //se o time esta com a bola, mas EU não estou com ela
-						System.out.println("Armador" + selfPerc.getUniformNumber() + getPlayerRecebendo());
-						if (selfPerc.getUniformNumber() == 4 && getPlayerRecebendo() != 4){ //-10
-							dash(new Vector2D(-10, 0)); //move para o meio de campo
-						}else if (selfPerc.getUniformNumber() == 5 && getPlayerRecebendo() != 5){ //se nao for camisa 4, é o camisa 5 armador //10
-							dash(new Vector2D(10, 0));
-						} 
+						if (getPlayerRecebendo() != 4 || getPlayerRecebendo() != 5){
+							if (selfPerc.getUniformNumber() == 4) //-10
+								dash(new Vector2D(-10, 0)); //move para o meio de campo
+							else if (selfPerc.getUniformNumber() == 5) //se nao for camisa 4, é o camisa 5 armador //10
+								dash(new Vector2D(10, 0));
+						
 				} else if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 					setBallPossession(true);
+					setPlayerRecebendo(-1);
 					// toca para o jogador mais perto
 					vTemp = getClosestPlayerPoint(selfPerc.getPosition(), selfPerc.getSide(), 2).getPosition();
 					setPlayerRecebendo(getClosestPlayerPoint(selfPerc.getPosition(), selfPerc.getSide(), 2).getUniformNumber());
