@@ -27,19 +27,19 @@ public class Atacante extends PlayerBase{
 				commander.doMoveBlocking(xInit, yInit);
 				break;
 			case PLAY_ON:
-				selfPerc.setReceiving(false);
+				setPlayerRecebendo(-1);
 				if(isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)){ //se o time esta com a bola, mas EU NÃO estou com ela
-					System.out.println("Atacante: " + selfPerc.getUniformNumber()+selfPerc.isReceiving());
-					if (selfPerc.getUniformNumber() == 7 && !selfPerc.isReceiving()){
+					System.out.println("Atacante: " + getPlayerRecebendo());
+					if (selfPerc.getUniformNumber() == 7 && getPlayerRecebendo() != 7){
 						dash(new Vector2D(ballPos.getX() + 10, -15)); //acompanha a bola com companheiro
 					}
-					else if (selfPerc.getUniformNumber() == 6 && !selfPerc.isReceiving())//se nao for camisa 7, é o camisa 6 atacante, vai para o gol adversario
+					else if (selfPerc.getUniformNumber() == 6 && getPlayerRecebendo() != 6)//se nao for camisa 7, é o camisa 6 atacante, vai para o gol adversario
 						dash(new Vector2D(goalPos.getX() - 20, 15));
 					
 				} else{
 				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 					setBallPossession(true);
-					selfPerc.setReceiving(false);
+					setPlayerRecebendo(-1);
 					if (isPointsAreClose(ballPos, goalPos, 30)) {
 						// chuta para o gol
 						kickToPoint(goalPos, 100);
@@ -49,8 +49,8 @@ public class Atacante extends PlayerBase{
 					}
 				} else {
 					pTemp = getClosestPlayerPoint(ballPos, side, 3);
-					if (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber() && selfPerc.isReceiving()) {
-						selfPerc.setReceiving(false);
+					if (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber() && getPlayerRecebendo() == selfPerc.getUniformNumber()) {
+						setPlayerRecebendo(-1);
 						// pega a bola
 						dash(ballPos);
 					} else if (!isPointsAreClose(selfPerc.getPosition(), initPos, 3)) {

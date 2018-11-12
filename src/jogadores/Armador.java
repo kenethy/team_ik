@@ -26,19 +26,19 @@ public class Armador extends PlayerBase {
 				commander.doMoveBlocking(xInit, yInit);	
 				break;
 			case PLAY_ON:
-				selfPerc.setReceiving(false);
+				setPlayerRecebendo(-1);
 					if(isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)){ //se o time esta com a bola, mas EU não estou com ela
-						System.out.println("Armador" + selfPerc.getUniformNumber() + selfPerc.isReceiving());
-						if (selfPerc.getUniformNumber() == 4 && !selfPerc.isReceiving()){ //-10
+						System.out.println("Armador" + selfPerc.getUniformNumber() + getPlayerRecebendo());
+						if (selfPerc.getUniformNumber() == 4 && getPlayerRecebendo() != 4){ //-10
 							dash(new Vector2D(-10, 0)); //move para o meio de campo
-						}else if (selfPerc.getUniformNumber() == 5 && !selfPerc.isReceiving()){ //se nao for camisa 4, é o camisa 5 armador //10
+						}else if (selfPerc.getUniformNumber() == 5 && getPlayerRecebendo() != 5){ //se nao for camisa 4, é o camisa 5 armador //10
 							dash(new Vector2D(10, 0));
 						} 
 				} else if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 					setBallPossession(true);
 					// toca para o jogador mais perto
-					vTemp = getClosestPlayerPoint(selfPerc.getPosition(), selfPerc.getSide(), 1).getPosition();
-					getClosestPlayerPoint(selfPerc.getPosition(), selfPerc.getSide(), 2).setReceiving(true);
+					vTemp = getClosestPlayerPoint(selfPerc.getPosition(), selfPerc.getSide(), 2).getPosition();
+					setPlayerRecebendo(getClosestPlayerPoint(selfPerc.getPosition(), selfPerc.getSide(), 2).getUniformNumber());
 						
 					Vector2D vTempF = vTemp.sub(selfPerc.getPosition());
 					double intensity = (vTempF.magnitude() * 100) / 40;
@@ -47,9 +47,9 @@ public class Armador extends PlayerBase {
 					//--
 				}else{
 					pTemp = getClosestPlayerPoint(ballPos, side, 3);
-					if (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber() && selfPerc.isReceiving()) {
+					if (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber() && getPlayerRecebendo() == selfPerc.getUniformNumber()) {
 						// pega a bola
-						selfPerc.setReceiving(false);
+						setPlayerRecebendo(-1);
 						dash(ballPos);
 					} else if (!isPointsAreClose(selfPerc.getPosition(), initPos, 3)) {
 						// recua

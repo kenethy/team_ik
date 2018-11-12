@@ -36,7 +36,8 @@ public class Goleiro extends PlayerBase{
 				if(isPointsAreClose(selfPerc.getPosition(),ballPos, 1)){
 					
 				// 	chutar
-					getClosestPlayerPoint(goalPos, selfPerc.getSide(), 2).setReceiving(true); 
+
+					setPlayerRecebendo(getClosestPlayerPoint(goalPos, selfPerc.getSide(), 2).getUniformNumber());
 					kickToPoint(getClosestPlayerPoint(goalPos, selfPerc.getSide(), 2).getPosition(), 100);
 
 					//getClosestPlayerPoint(selfPerc.getPosition(), selfPerc.getSide(), 2).setReceiving(true); 
