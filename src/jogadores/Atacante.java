@@ -28,26 +28,25 @@ public class Atacante extends PlayerBase{
 				break;
 			case PLAY_ON:
 				if(isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)){ //se o time esta com a bola, mas EU NÃO estou com ela
-					if (getPlayerRecebendo() != 6 && getPlayerRecebendo() != 7){ //e não estou marcado para receber a bola
-						if (selfPerc.getUniformNumber() == 7){
-							dash(new Vector2D(ballPos.getX() + 10, -15)); //acompanha a bola com companheiro
-						}
-						else if (selfPerc.getUniformNumber() == 6)//se nao for camisa 7, é o camisa 6 atacante, vai para o gol adversario
-							dash(new Vector2D(goalPos.getX() - 20, 15));
-					}
-					
-				} else if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) { //se estou perto da bola
+					if (selfPerc.getUniformNumber() == 7 && getPlayerRecebendo() != 7 && getPlayerRecebendo() != -1) //e não vou receber a bola
+						dash(new Vector2D(ballPos.getX() + 10, -15)); //acompanha a bola com companheiro
+					else if (selfPerc.getUniformNumber() == 6 && getPlayerRecebendo() != 6 && getPlayerRecebendo() != -1)//se nao for camisa 7, é o camisa 6 atacante, vai para o gol adversario
+						dash(new Vector2D(goalPos.getX() - 20, 15));
+				}
+				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) { //se estou perto da bola
 					setBallPossession(true); //seta que nosso time esta com a bola
 					setPlayerRecebendo(-1); //ninguém está marcado para receber a bola
 					if (isPointsAreClose(ballPos, goalPos, 30)) {
 						kickToPoint(goalPos, 100); // chuta para o gol
+						setBallPossession(false);
 					} else {
+						setBallPossession(true);
 						kickToPoint(goalPos, 20);  // conduz para o gol
 					}
 				} else { //se não estou perto da bola, corre até ela
-					pTemp = getClosestPlayerPoint(ballPos, side, 15);
-					if (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber() && getPlayerRecebendo() == selfPerc.getUniformNumber()) {
-						setPlayerRecebendo(-1);
+					pTemp = getClosestPlayerPoint(ballPos, side, 3);
+					System.out.println("else perto bola;  pTemp:" + pTemp.getUniformNumber());
+					if ((pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber()) || getPlayerRecebendo() == selfPerc.getUniformNumber()) {
 						// pega a bola
 						dash(ballPos);
 					} else if (!isPointsAreClose(selfPerc.getPosition(), initPos, 3)) {
@@ -59,7 +58,7 @@ public class Atacante extends PlayerBase{
 					}
 				}
 				break;
-			/* Todos os estados da partida */
+				/* Todos os estados da partida */
 			default:
 				break;
 			}

@@ -6,6 +6,7 @@ import simple_soccer_lib.utils.EFieldSide;
 import simple_soccer_lib.utils.Vector2D;
 
 import simple_soccer_lib.PlayerCommander;
+import simple_soccer_lib.perception.PlayerPerception;
 
 public class Goleiro extends PlayerBase{
 	
@@ -20,6 +21,7 @@ public class Goleiro extends PlayerBase{
 		Vector2D initPos = new Vector2D(xInit * side.value(), yInit * side.value());
 		Vector2D goalPos = new Vector2D(50 * side.value(), 0);
 		Vector2D ballPos;
+		PlayerPerception pTemp = null;
 		Rectangle area = side == EFieldSide.LEFT ? new Rectangle(-52, -20, 16, 40) : new Rectangle(36, -20, 16, 40);
 		while (true) {
 			updatePerceptions();
@@ -44,9 +46,11 @@ public class Goleiro extends PlayerBase{
 					}
 					setPlayerRecebendo(uniform_mais_perto);
 					kickToPoint(fieldPerc.getTeamPlayer(selfPerc.getSide(), uniform_mais_perto).getPosition(), 80);
-					setBallPossession(true);
+					setBallPossession(false);
 					
-				} else if (area.contains(ballX, ballY)) {
+				} else 
+					pTemp = getClosestPlayerPoint(ballPos, side, 3);
+					if (area.contains(ballX, ballY) || (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber()) || getPlayerRecebendo() == selfPerc.getUniformNumber()) {
 					// defender
 					dash(ballPos);
 				} else if (!isPointsAreClose(selfPerc.getPosition(), initPos, 3)) {
