@@ -8,8 +8,8 @@ import simple_soccer_lib.utils.Vector2D;
 import simple_soccer_lib.PlayerCommander;
 import simple_soccer_lib.perception.PlayerPerception;
 
-public class Goleiro extends PlayerBase{
-	
+public class Goleiro extends PlayerBase {
+
 	public Goleiro(PlayerCommander player) {
 		super(player);
 		// TODO Auto-generated constructor stub
@@ -33,24 +33,28 @@ public class Goleiro extends PlayerBase{
 				break;
 			case PLAY_ON:
 				commander.doMoveBlocking(xInit, yInit);
-				ballX=fieldPerc.getBall().getPosition().getX();
-				ballY=fieldPerc.getBall().getPosition().getY();
-				if(isPointsAreClose(selfPerc.getPosition(),ballPos, 1)){
-					
-				// 	chutar pro player mais perto 
+				ballX = fieldPerc.getBall().getPosition().getX();
+				ballY = fieldPerc.getBall().getPosition().getY();
+				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
+
+					// chutar pro player mais perto
 					int uniform_mais_perto = 1;
 					int incremento = 5;
-					while (uniform_mais_perto == 1){
-						uniform_mais_perto = getClosestPlayerPoint(selfPerc.getPosition().sum(new Vector2D(incremento,0)), selfPerc.getSide(), 3).getUniformNumber();
+					while (uniform_mais_perto == 1) {
+						uniform_mais_perto = getClosestPlayerPoint(
+								selfPerc.getPosition().sum(new Vector2D(incremento, 0)), selfPerc.getSide(), 3)
+										.getUniformNumber();
 						incremento += 5;
 					}
 					setPlayerRecebendo(uniform_mais_perto);
 					kickToPoint(fieldPerc.getTeamPlayer(selfPerc.getSide(), uniform_mais_perto).getPosition(), 80);
 					setBallPossession(false);
-					
-				} else 
+
+				} else
 					pTemp = getClosestPlayerPoint(ballPos, side, 3);
-					if (area.contains(ballX, ballY) || (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber()) || getPlayerRecebendo() == selfPerc.getUniformNumber()) {
+				if (area.contains(ballX, ballY)
+						|| (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber())
+						|| getPlayerRecebendo() == selfPerc.getUniformNumber()) {
 					// defender
 					dash(ballPos);
 				} else if (!isPointsAreClose(selfPerc.getPosition(), initPos, 3)) {
@@ -60,7 +64,7 @@ public class Goleiro extends PlayerBase{
 					// olhar para a bola
 					turnToPoint(ballPos);
 				}
-			/* Todos os estados da partida */
+				/* Todos os estados da partida */
 			default:
 				break;
 			}

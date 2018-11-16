@@ -27,13 +27,17 @@ public class Armador extends PlayerBase {
 				break;
 			case PLAY_ON:
 				System.out.println("recebendo: " + getPlayerRecebendo());
-				if(isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)){ //se o time esta com a bola, mas EU não estou com ela
-					if (selfPerc.getUniformNumber() == 4 && getPlayerRecebendo() != 4 && getPlayerRecebendo() != -1) //e não vou receber a bola 
+				//se o time esta com a bola, mas EU não estou com ela
+				if(isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)){ 
+					//e não vou receber a bola
+					if (selfPerc.getUniformNumber() == 4 && getPlayerRecebendo() != 4 && getPlayerRecebendo() != -1)  
 						dash(new Vector2D(-10, 0)); //move para o meio de campo
-					else if (selfPerc.getUniformNumber() == 5 && getPlayerRecebendo() != 5 && getPlayerRecebendo() != -1) //se nao for camisa 4, é o camisa 5 armador //10
+					//se nao for camisa 4, é o camisa 5 armador
+					else if (selfPerc.getUniformNumber() == 5 && getPlayerRecebendo() != 5 && getPlayerRecebendo() != -1) 
 						dash(new Vector2D(10, 0)); //move para o meio de campo
 				}
-				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) { //se estou perto da bola
+				//se estou perto da bola
+				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) { 
 					setBallPossession(true); //setar que o nosso time esta com a bola
 					setPlayerRecebendo(-1); //ninguém esta marcado para receber a bola
 					// toca para o atacante mais perto
@@ -67,7 +71,7 @@ public class Armador extends PlayerBase {
 				}
 				break;
 
-				/* Todos os estados da partida */
+			/* Todos os estados da partida */
 			default:
 				break;
 			}
