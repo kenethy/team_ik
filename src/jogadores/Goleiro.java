@@ -23,6 +23,7 @@ public class Goleiro extends PlayerBase {
 		Vector2D ballPos;
 		PlayerPerception pTemp = null;
 		Rectangle area = side == EFieldSide.LEFT ? new Rectangle(-52, -20, 16, 40) : new Rectangle(36, -20, 16, 40);
+
 		while (true) {
 			updatePerceptions();
 			ballPos = fieldPerc.getBall().getPosition();
@@ -57,6 +58,8 @@ public class Goleiro extends PlayerBase {
 						|| getPlayerRecebendo() == selfPerc.getUniformNumber()) {
 					// defender
 					dash(ballPos);
+					if(commander.doCatch(-45))
+						commander.doCatchBlocking(45);
 				} else if (!isPointsAreClose(selfPerc.getPosition(), initPos, 3)) {
 					// recuar
 					dash(initPos);
