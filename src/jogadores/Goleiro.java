@@ -48,7 +48,10 @@ public class Goleiro extends PlayerBase {
 						incremento += 5;
 					}
 					setPlayerRecebendo(uniform_mais_perto);
-					kickToPoint(fieldPerc.getTeamPlayer(selfPerc.getSide(), uniform_mais_perto).getPosition(), 80);
+					Vector2D vTemp = fieldPerc.getTeamPlayer(selfPerc.getSide(), uniform_mais_perto).getPosition();
+					Vector2D vTempF = vTemp.sub(selfPerc.getPosition());
+					double intensity = (vTempF.magnitude() * 100) / 20;
+					kickToPoint(vTemp, intensity);
 					setBallPossession(false);
 
 				} else

@@ -7,6 +7,7 @@ public class Main {
 		try {
 			CommandTeam teamA = new CommandTeam();
 			teamA.launchTeamAndServer();
+			//teamA.launchTeam();
 		} catch (UnknownHostException e) {
 			System.out.println("Falha ao conectar");
 		}
