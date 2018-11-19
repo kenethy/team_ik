@@ -5,14 +5,14 @@ import simple_soccer_lib.perception.PlayerPerception;
 import simple_soccer_lib.utils.EFieldSide;
 import simple_soccer_lib.utils.Vector2D;
 
-public class Defensor extends PlayerBase{
+public class Defensor extends PlayerBase {
 
 	public Defensor(PlayerCommander player) {
 		super(player);
 		// TODO Auto-generated constructor stub
 	}
-	
-	public void acaoDefensor(long nextIteration, int pos){
+
+	public void acaoDefensor(long nextIteration, int pos) {
 		double xInit = -30, yInit = 0 + pos;
 		EFieldSide side = selfPerc.getSide();
 		Vector2D initPos = new Vector2D(xInit * side.value(), yInit * side.value());
@@ -55,7 +55,7 @@ public class Defensor extends PlayerBase{
 			default:
 				break;
 			}
-	}
+		}
 
+	}
 }
-}	

@@ -9,7 +9,6 @@ import simple_soccer_lib.perception.PlayerPerception;
 import simple_soccer_lib.utils.EFieldSide;
 import simple_soccer_lib.utils.Vector2D;
 
-
 public class PlayerBase {
 	protected PlayerCommander commander;
 	public PlayerPerception selfPerc;
@@ -17,12 +16,11 @@ public class PlayerBase {
 	protected MatchPerception matchPerc;
 	public static boolean isBallPossession;
 	public static int playerRecebendo;
-	
 
 	public PlayerBase(PlayerCommander player) {
 		commander = player;
 	}
-	
+
 	public boolean isBallPossession() {
 		return isBallPossession;
 	}
@@ -30,7 +28,6 @@ public class PlayerBase {
 	public void setBallPossession(boolean isBallPossession) {
 		PlayerBase.isBallPossession = isBallPossession;
 	}
-	
 
 	public static int getPlayerRecebendo() {
 		return playerRecebendo;
@@ -40,7 +37,6 @@ public class PlayerBase {
 		PlayerBase.playerRecebendo = playerRecebendo;
 	}
 
-	
 	public void updatePerceptions() {
 		PlayerPerception newSelf = commander.perceiveSelfBlocking();
 		FieldPerception newField = commander.perceiveFieldBlocking();

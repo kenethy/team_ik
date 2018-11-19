@@ -22,52 +22,65 @@ public class Armador extends PlayerBase {
 			updatePerceptions();
 			ballPos = fieldPerc.getBall().getPosition();
 			switch (matchPerc.getState()) {
+
 			case BEFORE_KICK_OFF:
-				commander.doMoveBlocking(xInit, yInit);	
+				commander.doMoveBlocking(xInit, yInit);
 				break;
+
 			case PLAY_ON:
 				System.out.println("recebendo: " + getPlayerRecebendo());
-				if(isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)){ //se o time esta com a bola, mas EU não estou com ela
-					if (selfPerc.getUniformNumber() == 4 && getPlayerRecebendo() != 4 && getPlayerRecebendo() != -1) //e não vou receber a bola 
-						dash(new Vector2D(-10, 0)); //move para o meio de campo
-					else if (selfPerc.getUniformNumber() == 5 && getPlayerRecebendo() != 5 && getPlayerRecebendo() != -1) //se nao for camisa 4, é o camisa 5 armador //10
-						dash(new Vector2D(10, 0)); //move para o meio de campo
+				// se o time esta com a bola, mas EU não estou com ela
+				if (isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
+					// e não vou receber a bola
+					if (selfPerc.getUniformNumber() == 4 && getPlayerRecebendo() != 4 && getPlayerRecebendo() != -1)
+						dash(new Vector2D(-10, 0)); // move para o meio de campo
+					// se nao for camisa 4, é o camisa 5 armador
+					else if (selfPerc.getUniformNumber() == 5 && getPlayerRecebendo() != 5
+							&& getPlayerRecebendo() != -1)
+						dash(new Vector2D(10, 0)); // move para o meio de campo
 				}
-				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) { //se estou perto da bola
-					setBallPossession(true); //setar que o nosso time esta com a bola
-					setPlayerRecebendo(-1); //ninguém esta marcado para receber a bola
+				// se estou perto da bola
+				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
+					setBallPossession(true); // setar que o nosso time esta com a bola
+					setPlayerRecebendo(-1); // ninguém esta marcado para receber a bola
+
 					// toca para o atacante mais perto
-					double dist1 = Vector2D.distance(selfPerc.getPosition(), fieldPerc.getTeamPlayer(selfPerc.getSide(), 6).getPosition());
-					double dist2 = Vector2D.distance(selfPerc.getPosition(), fieldPerc.getTeamPlayer(selfPerc.getSide(), 7).getPosition());
-					vTemp = dist1>dist2 ? fieldPerc.getTeamPlayer(selfPerc.getSide(), 7).getPosition() : fieldPerc.getTeamPlayer(selfPerc.getSide(), 6).getPosition(); //pega o player mais perto
-					if (dist1>dist2){
+					double dist1 = Vector2D.distance(selfPerc.getPosition(),
+							fieldPerc.getTeamPlayer(selfPerc.getSide(), 6).getPosition());
+					double dist2 = Vector2D.distance(selfPerc.getPosition(),
+							fieldPerc.getTeamPlayer(selfPerc.getSide(), 7).getPosition());
+
+					// pega o player mais perto
+					vTemp = dist1 > dist2 ? fieldPerc.getTeamPlayer(selfPerc.getSide(), 7).getPosition()
+							: fieldPerc.getTeamPlayer(selfPerc.getSide(), 6).getPosition();
+					if (dist1 > dist2) {
 						setPlayerRecebendo(7);
-						vTemp = fieldPerc.getTeamPlayer(selfPerc.getSide(),7).getPosition();
-					}else{
+						vTemp = fieldPerc.getTeamPlayer(selfPerc.getSide(), 7).getPosition();
+					} else {
 						setPlayerRecebendo(6);
-						vTemp = fieldPerc.getTeamPlayer(selfPerc.getSide(),6).getPosition();
+						vTemp = fieldPerc.getTeamPlayer(selfPerc.getSide(), 6).getPosition();
 					}
 					Vector2D vTempF = vTemp.sub(selfPerc.getPosition());
 					double intensity = (vTempF.magnitude() * 100) / 40;
 					kickToPoint(vTemp, intensity);
 					setBallPossession(false);
-				}else{ //se não estou perto da bola, corre até ela
+
+				} else { // se não estou perto da bola, corre até ela
 					pTemp = getClosestPlayerPoint(ballPos, side, 3);
-					if ((pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber()) || getPlayerRecebendo() == selfPerc.getUniformNumber()) {
+					if ((pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber())
+							|| getPlayerRecebendo() == selfPerc.getUniformNumber()) {
 						// pega a bola
 						dash(ballPos);
 					} else if (!isPointsAreClose(selfPerc.getPosition(), initPos, 3)) {
 						// recua
-						//dash(initPos);
+						// dash(initPos);
 					} else {
 						// olha para a bola
 						turnToPoint(ballPos);
 					}
-
 				}
 				break;
-
-				/* Todos os estados da partida */
+			/* Todos os estados da partida */
 			default:
 				break;
 			}
