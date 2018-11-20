@@ -26,7 +26,7 @@ public class Armador extends PlayerBase {
 			case BEFORE_KICK_OFF:
 				commander.doMoveBlocking(xInit, yInit);
 				break;
-			
+			case KICK_OFF_LEFT:
 			case PLAY_ON:
 				System.out.println("recebendo: " + getPlayerRecebendo());
 				// se o time esta com a bola, mas EU não estou com ela
@@ -67,8 +67,8 @@ public class Armador extends PlayerBase {
 
 				} else { // se não estou perto da bola, corre até ela
 					pTemp = getClosestPlayerPoint(ballPos, side, 3);
-					if ((pTemp != null && (pTemp.getUniformNumber() == selfPerc.getUniformNumber()) && getPlayerRecebendo() == -1)
-							|| getPlayerRecebendo() == selfPerc.getUniformNumber()) {
+					if ((pTemp != null && (pTemp.getUniformNumber() == selfPerc.getUniformNumber())
+							&& getPlayerRecebendo() == -1) || getPlayerRecebendo() == selfPerc.getUniformNumber()) {
 						// pega a bola
 						dash(ballPos);
 					} else if (!isPointsAreClose(selfPerc.getPosition(), initPos, 3)) {

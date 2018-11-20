@@ -15,7 +15,7 @@ public class PlayerBase {
 	protected FieldPerception fieldPerc;
 	protected MatchPerception matchPerc;
 	public static boolean isBallPossession;
-	public static int playerRecebendo;
+	public static int playerRecebendo = -1;
 
 	public PlayerBase(PlayerCommander player) {
 		commander = player;

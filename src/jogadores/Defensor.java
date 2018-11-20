@@ -25,6 +25,7 @@ public class Defensor extends PlayerBase {
 			case BEFORE_KICK_OFF:
 				commander.doMoveBlocking(xInit, yInit);
 				break;
+			case KICK_OFF_LEFT:
 			case PLAY_ON:
 				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 					if (selfPerc.getUniformNumber() == 2) {
