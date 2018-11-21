@@ -30,6 +30,7 @@ public class Defensor extends PlayerBase {
 			case PLAY_ON:
 				// POSSE DE BOLA
 				if (isBallPossession()) {
+					System.out.println("posse de bola a favor");
 					// Posse de bola e realização de toques
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 						if (selfPerc.getUniformNumber() == 2) {
@@ -60,7 +61,7 @@ public class Defensor extends PlayerBase {
 				} else {
 					// SEM A POSSE DA BOLA
 					// Quando o ataque chegar perto do defensor
-					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2) && !isBallPossession()) {
+					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 3) && !isBallPossession()) {
 						// ir ate a bola
 						dash(ballPos);
 						// chutar em direcao ao gol
