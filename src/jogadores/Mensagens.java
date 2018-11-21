@@ -1,6 +1,6 @@
 package jogadores;
 
-public class Mensagens {
+public abstract class Mensagens {
 
 	String msg[] = new String[7];
 
