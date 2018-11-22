@@ -26,8 +26,8 @@ public class Defensor extends PlayerBase {
 			case BEFORE_KICK_OFF:
 				commander.doMoveBlocking(xInit, yInit);
 				break;
-			case KICK_OFF_LEFT:
-			case KICK_OFF_RIGHT:
+			case KICK_OFF_LEFT: setPlayerRecebendo(-1);
+			case KICK_OFF_RIGHT: setPlayerRecebendo(-1);
 			case PLAY_ON:
 				// POSSE DE BOLA
 				if (isBallPossession()) { 
@@ -64,7 +64,7 @@ public class Defensor extends PlayerBase {
 					// SEM A POSSE DA BOLA
 					System.out.println("Sem a posse da bola");
 					// Quando o ataque chegar perto do defensor
-					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 10)) {
+					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 12)) {
 						// ir ate a bola
 						dash(ballPos);
 						// chutar em direcao ao gol

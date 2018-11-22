@@ -26,8 +26,8 @@ public class Atacante extends PlayerBase {
 			case BEFORE_KICK_OFF:
 				commander.doMoveBlocking(xInit, yInit);
 				break;
-			case KICK_OFF_LEFT:
-			case KICK_OFF_RIGHT:
+			case KICK_OFF_LEFT: setPlayerRecebendo(-1);
+			case KICK_OFF_RIGHT: setPlayerRecebendo(-1);
 			case PLAY_ON:
 				// se o time esta com a bola, mas EU NÃO estou com ela
 				if (isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
@@ -56,6 +56,7 @@ public class Atacante extends PlayerBase {
 								turnToPoint(posTemp);
 								//Vector2D vTempF = posTemp.sub(selfPerc.getPosition());
 								double intensity = (posTemp.magnitude() * 100) / 20;
+								System.out.println(posTemp.magnitude() + "*100 / 40 = "+ posTemp.magnitude()*100 / 40);
 								setPlayerRecebendo(p.getUniformNumber());
 								kickToPoint(posTemp, intensity);
 							} else {

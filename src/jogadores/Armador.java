@@ -26,8 +26,8 @@ public class Armador extends PlayerBase {
 			case BEFORE_KICK_OFF:
 				commander.doMoveBlocking(xInit, yInit);
 				break;
-			case KICK_OFF_LEFT:
-			case KICK_OFF_RIGHT:
+			case KICK_OFF_LEFT: setPlayerRecebendo(-1);
+			case KICK_OFF_RIGHT: setPlayerRecebendo(-1);
 			case PLAY_ON:
 				System.out.println("recebendo: " + getPlayerRecebendo());
 				// se o time esta com a bola, mas EU não estou com ela
@@ -62,8 +62,9 @@ public class Armador extends PlayerBase {
 						vTemp = fieldPerc.getTeamPlayer(selfPerc.getSide(), 6).getPosition();
 					}
 					turnToPoint(vTemp);
-					Vector2D vTempF = vTemp.sub(selfPerc.getPosition());
-					double intensity = (vTempF.magnitude() * 100) / 40;
+					//Vector2D vTempF = vTemp.sub(selfPerc.getPosition());
+					double intensity = (vTemp.magnitude() * 100) / 40;
+					System.out.println(vTemp.magnitude() + "*100/40 = "+ vTemp.magnitude()*100/40);
 					kickToPoint(vTemp, intensity);
 					setBallPossession(false);
 
