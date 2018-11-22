@@ -27,6 +27,7 @@ public class Atacante extends PlayerBase {
 				commander.doMoveBlocking(xInit, yInit);
 				break;
 			case KICK_OFF_LEFT:
+			case KICK_OFF_RIGHT:
 			case PLAY_ON:
 				// se o time esta com a bola, mas EU NÃO estou com ela
 				if (isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
@@ -38,6 +39,7 @@ public class Atacante extends PlayerBase {
 					else if (selfPerc.getUniformNumber() == 6 && getPlayerRecebendo() != 6
 							&& getPlayerRecebendo() != -1)
 						dash(new Vector2D(goalPos.getX() - 20, 15));
+					// Colocar para ele verificar a posicao do ultimo jogador
 				}
 				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) { // se estou perto da bola
 					setBallPossession(true); // seta que nosso time esta com a bola
@@ -50,12 +52,16 @@ public class Atacante extends PlayerBase {
 						PlayerPerception p = getClosestPlayerPoint(goalPos, selfPerc.getSide(), 2);
 						if (p.getUniformNumber() != selfPerc.getUniformNumber()) {
 							Vector2D posTemp = p.getPosition();
-							/*
-							 * Vector2D vTempF = vTemp.sub(selfPerc.getPosition()); double intensity =
-							 * (vTempF.magnitude() * 100) / 40; kickToPoint(vTemp, intensity);
-							 */
-							setPlayerRecebendo(p.getUniformNumber());
-							kickToPoint(posTemp, 50);
+							if (!isOffside(posTemp, fieldPerc.getTeamPlayers(EFieldSide.invert(side)), side)) {
+								turnToPoint(posTemp);
+								Vector2D vTempF = posTemp.sub(selfPerc.getPosition());
+								double intensity = (vTempF.magnitude() * 100) / 40;
+								setPlayerRecebendo(p.getUniformNumber());
+								kickToPoint(posTemp, intensity);
+							} else {
+								setBallPossession(true);
+								kickToPoint(goalPos, 20); // conduz para o gol
+							}
 						} else {
 							setBallPossession(true);
 							kickToPoint(goalPos, 20); // conduz para o gol

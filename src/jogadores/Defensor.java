@@ -27,12 +27,14 @@ public class Defensor extends PlayerBase {
 				commander.doMoveBlocking(xInit, yInit);
 				break;
 			case KICK_OFF_LEFT:
+			case KICK_OFF_RIGHT:
 			case PLAY_ON:
 				// POSSE DE BOLA
-				if (isBallPossession()) {
+				if (isBallPossession()) { 
 					System.out.println("posse de bola a favor");
 					// Posse de bola e realização de toques
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
+						setBallPossession(true);
 						if (selfPerc.getUniformNumber() == 2) {
 							// toca para o jogador 3
 							vTemp = fieldPerc.getTeamPlayer(side, 3).getPosition();
@@ -43,7 +45,7 @@ public class Defensor extends PlayerBase {
 						Vector2D vTempF = vTemp.sub(selfPerc.getPosition());
 						double intensity = (vTempF.magnitude() * 100) / 40;
 						kickToPoint(vTemp, intensity);
-
+						setBallPossession(false);
 						// Sem a bola, caso esteja próximo ir ate a bola
 					} else {
 						pTemp = getClosestPlayerPoint(ballPos, side, 3);
@@ -60,6 +62,7 @@ public class Defensor extends PlayerBase {
 					}
 				} else {
 					// SEM A POSSE DA BOLA
+					System.out.println("Sem a posse da bola");
 					// Quando o ataque chegar perto do defensor
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 3)) {
 						// ir ate a bola

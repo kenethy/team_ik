@@ -27,6 +27,7 @@ public class Armador extends PlayerBase {
 				commander.doMoveBlocking(xInit, yInit);
 				break;
 			case KICK_OFF_LEFT:
+			case KICK_OFF_RIGHT:
 			case PLAY_ON:
 				System.out.println("recebendo: " + getPlayerRecebendo());
 				// se o time esta com a bola, mas EU não estou com ela
@@ -42,7 +43,7 @@ public class Armador extends PlayerBase {
 				// se estou perto da bola
 				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 					setBallPossession(true); // setar que o nosso time esta com a bola
-					setPlayerRecebendo(-1); // ninguém esta marcado para receber a bola
+					setPlayerRecebendo(-1); // ninguém esta marcado para receber a bola					
 
 					// toca para o atacante mais perto
 					double dist1 = Vector2D.distance(selfPerc.getPosition(),
@@ -60,6 +61,7 @@ public class Armador extends PlayerBase {
 						setPlayerRecebendo(6);
 						vTemp = fieldPerc.getTeamPlayer(selfPerc.getSide(), 6).getPosition();
 					}
+					turnToPoint(vTemp);
 					Vector2D vTempF = vTemp.sub(selfPerc.getPosition());
 					double intensity = (vTempF.magnitude() * 100) / 40;
 					kickToPoint(vTemp, intensity);
