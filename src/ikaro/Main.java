@@ -3,16 +3,25 @@ package ikaro;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.UnknownHostException;
+import team.legacy.A1.*;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
 		CommandTeam teamA = new CommandTeam();
-		//se o processo do ervidor está rodando, lança só o time
+		//para lançar o outro time, basta importar o pacote dele e chamar sua main antes ou depois do nosso launchTeam e/ou launchTeamAndServer
+		//se o processo do servidor está rodando, lança só o time
 		//se não, lança o time e o servidor
-		if(isProcessRunning()) 
+		if(isProcessRunning()) {
+			//so inverter a ordem para trocar os lados
 			teamA.launchTeam();
-		else teamA.launchTeamAndServer();
+			MainA1.main(args);
+		}
+		else{
+			//so inverter a ordem para trocar os lados
+			teamA.launchTeamAndServer();
+			MainA1.main(args);
+			
+		}
 		
 	}
 	

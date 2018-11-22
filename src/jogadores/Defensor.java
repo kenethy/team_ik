@@ -64,7 +64,7 @@ public class Defensor extends PlayerBase {
 					// SEM A POSSE DA BOLA
 					System.out.println("Sem a posse da bola");
 					// Quando o ataque chegar perto do defensor
-					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 3)) {
+					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 10)) {
 						// ir ate a bola
 						dash(ballPos);
 						// chutar em direcao ao gol
