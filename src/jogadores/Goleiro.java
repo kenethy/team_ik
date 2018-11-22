@@ -59,13 +59,12 @@ public class Goleiro extends PlayerBase {
 				} else {
 					pTemp = getClosestPlayerPoint(ballPos, side, 3);
 				}
-				if (area.contains(ballX, ballY)
-						|| (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber())
+				if (area.contains(ballX, ballY))
+					dash(ballPos);
+				else if (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber()
 						|| getPlayerRecebendo() == selfPerc.getUniformNumber()) {
 					// defender
 					dash(ballPos);
-					if (commander.doCatch(-45))
-						commander.doCatchBlocking(45);
 				} else {
 					// Posicionar o goleiro em relação a bola
 					// calculando a proporcao do largura do campo e do gol

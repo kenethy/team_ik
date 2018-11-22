@@ -54,8 +54,8 @@ public class Atacante extends PlayerBase {
 							Vector2D posTemp = p.getPosition();
 							if (!isOffside(posTemp, fieldPerc.getTeamPlayers(EFieldSide.invert(side)), side)) {
 								turnToPoint(posTemp);
-								Vector2D vTempF = posTemp.sub(selfPerc.getPosition());
-								double intensity = (vTempF.magnitude() * 100) / 40;
+								//Vector2D vTempF = posTemp.sub(selfPerc.getPosition());
+								double intensity = (posTemp.magnitude() * 100) / 20;
 								setPlayerRecebendo(p.getUniformNumber());
 								kickToPoint(posTemp, intensity);
 							} else {
