@@ -15,7 +15,7 @@ public class PlayerBase {
 	protected FieldPerception fieldPerc;
 	protected MatchPerception matchPerc;
 	public static boolean isBallPossession;
-	public static int playerRecebendo;
+	public static int playerRecebendo = -1;
 
 	public PlayerBase(PlayerCommander player) {
 		commander = player;
@@ -103,5 +103,32 @@ public class PlayerBase {
 			}
 		}
 		return np;
+	}
+
+	/**
+	 * Retorna se esta impedido Verifica se existe um jogador adversario a sua
+	 * frente
+	 * 
+	 * @param playerReceive
+	 * @param margin
+	 * @param lp
+	 * @param mySide
+	 * @return
+	 */
+	protected boolean isOffside(Vector2D playerReceive, ArrayList<PlayerPerception> lp, EFieldSide mySide) {
+
+		for (PlayerPerception p : lp) {
+			if (p.getPosition() == null)
+				break;
+			// Se a posicao do jogador adversario esta entre o atacante e o goleiro
+			if (mySide.equals(EFieldSide.LEFT)) {
+				if (playerReceive.getX() < p.getPosition().getX() && !p.isGoalie())
+					return false;
+			} else {
+				if (playerReceive.getX() > p.getPosition().getX() && !p.isGoalie())
+					return false;
+			}
+		}
+		return true;
 	}
 }
