@@ -23,6 +23,13 @@ public class Atacante extends PlayerBase {
 			updatePerceptions();
 			ballPos = fieldPerc.getBall().getPosition();
 			switch (matchPerc.getState()) {
+			
+			case FREE_KICK_LEFT: break;
+			case FREE_KICK_RIGHT: break;
+			case KICK_IN_LEFT: break;
+			case KICK_IN_RIGHT: break;
+			case GOAL_KICK_LEFT: break;
+			case GOAL_KICK_RIGHT: break;
 			case BEFORE_KICK_OFF:
 				commander.doMoveBlocking(xInit, yInit);
 				break;

@@ -6,6 +6,7 @@ import simple_soccer_lib.utils.EFieldSide;
 import simple_soccer_lib.utils.Vector2D;
 
 import simple_soccer_lib.PlayerCommander;
+import simple_soccer_lib.perception.MatchPerception;
 import simple_soccer_lib.perception.PlayerPerception;
 
 public class Goleiro extends PlayerBase {
@@ -30,12 +31,46 @@ public class Goleiro extends PlayerBase {
 		while (true) {
 			updatePerceptions();
 			ballPos = fieldPerc.getBall().getPosition();
+			int localState = 0;
 			switch (matchPerc.getState()) {
 			case BEFORE_KICK_OFF:
 				// posicao inicial
 				commander.doMoveBlocking(xInit, yInit);
 				break;
+				
+			case KICK_OFF_LEFT: break;
+			case KICK_OFF_RIGHT: break;
+			case FREE_KICK_LEFT: break;
+			case FREE_KICK_RIGHT: break;
+			case KICK_IN_LEFT: break;
+			case KICK_IN_RIGHT: break;
+			case GOAL_KICK_LEFT: break;
+			case GOAL_KICK_RIGHT: break;
 			case PLAY_ON:
+				 
+				switch (localState){
+				
+				case 0: //posicionar para receber a bola
+					
+					localState = 1; //ir para o estado 1
+					break;
+				
+				case 1: //agarrar a bola
+					
+					localState = 2;
+					break;
+				
+				case 2: //chutar a bola 
+					
+					localState = 3;
+					break;
+				
+				case 3: //perseguir a bola  
+					
+					localState = 1;
+					break;
+				
+				}
 				ballX = fieldPerc.getBall().getPosition().getX();
 				ballY = fieldPerc.getBall().getPosition().getY();
 				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
