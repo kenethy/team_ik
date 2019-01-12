@@ -37,7 +37,9 @@ public class Goleiro extends PlayerBase {
 				// posicao inicial
 				commander.doMoveBlocking(xInit, yInit);
 				break;
-				
+			
+			case OFFSIDE_LEFT: break;
+			case OFFSIDE_RIGHT: break;
 			case KICK_OFF_LEFT: break;
 			case KICK_OFF_RIGHT: break;
 			case FREE_KICK_LEFT: break;
@@ -50,7 +52,7 @@ public class Goleiro extends PlayerBase {
 				 
 				switch (localState){
 				
-				case 0: //posicionar para receber a bola
+				case 0: //posicionar para receber a bola 
 					
 					localState = 1; //ir para o estado 1
 					break;
