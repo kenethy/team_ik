@@ -23,22 +23,60 @@ public class Armador extends PlayerBase {
 			ballPos = fieldPerc.getBall().getPosition();
 			switch (matchPerc.getState()) {
 			
-			case OFFSIDE_LEFT: break;
-			case OFFSIDE_RIGHT: break;
-			case FREE_KICK_LEFT: break;
-			case FREE_KICK_RIGHT: break;
-			case KICK_IN_LEFT: break;
-			case KICK_IN_RIGHT: break;
-			case GOAL_KICK_LEFT: break;
-			case GOAL_KICK_RIGHT: break;
+			case OFFSIDE_LEFT:
+				if (side == EFieldSide.LEFT){
+
+				}
+				break;
+			case OFFSIDE_RIGHT:
+				if (side == EFieldSide.RIGHT){
+
+				}
+				break;
+			case FREE_KICK_LEFT: 
+				if (side == EFieldSide.LEFT){
+					if (getClosestPlayerPoint(ballPos, side, 4).getUniformNumber() == selfPerc.getUniformNumber()){
+						dash(ballPos);
+						kickToPoint(getClosestPlayerPoint(selfPerc.getPosition().sum(new Vector2D(0, 5)), side, 4).getPosition(), 50);
+					}
+				}
+				break;
+			case FREE_KICK_RIGHT:
+				if (side == EFieldSide.RIGHT){
+					if (getClosestPlayerPoint(ballPos, side, 4).getUniformNumber() == selfPerc.getUniformNumber()){
+						dash(ballPos);
+						kickToPoint(getClosestPlayerPoint(selfPerc.getPosition().sum(new Vector2D(0, 5)), side, 4).getPosition(), 50);
+					}
+				}
+				break;
+			case KICK_IN_LEFT: 
+				if (side == EFieldSide.LEFT){
+
+				}
+				break;
+			case KICK_IN_RIGHT: 
+				if (side == EFieldSide.RIGHT){
+
+				}
+				break;
+			case GOAL_KICK_LEFT:
+				if (side == EFieldSide.LEFT){
+
+				}
+				break;
+			case GOAL_KICK_RIGHT: 
+				if (side == EFieldSide.RIGHT){
+
+				}
+				break;
 
 			case BEFORE_KICK_OFF:
-				commander.doMoveBlocking(xInit, yInit);
+				commander.doMoveBlocking(xInit * side.value(), yInit * side.value());
 				break;
 			case KICK_OFF_LEFT: setPlayerRecebendo(-1);
 			case KICK_OFF_RIGHT: setPlayerRecebendo(-1);
 			case PLAY_ON:
-				System.out.println("recebendo: " + getPlayerRecebendo());
+				//System.out.println("recebendo: " + getPlayerRecebendo());
 				// se o time esta com a bola, mas EU não estou com ela
 				if (isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 					// e não vou receber a bola
@@ -73,7 +111,7 @@ public class Armador extends PlayerBase {
 					turnToPoint(vTemp);
 					//Vector2D vTempF = vTemp.sub(selfPerc.getPosition());
 					double intensity = (vTemp.magnitude() * 100) / 40;
-					System.out.println(vTemp.magnitude() + "*100/40 = "+ vTemp.magnitude()*100/40);
+					//System.out.println(vTemp.magnitude() + "*100/40 = "+ vTemp.magnitude()*100/40);
 					kickToPoint(vTemp, intensity);
 					setBallPossession(false);
 

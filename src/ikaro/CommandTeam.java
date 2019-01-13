@@ -1,12 +1,13 @@
 package ikaro;
 
+
 import simple_soccer_lib.AbstractTeam;
 import simple_soccer_lib.PlayerCommander;
 
 public class CommandTeam extends AbstractTeam {
 
 	public CommandTeam() {
-		super("TeamA", 7, true);
+		super("WestHam"+Math.round(Math.random()*10), 7, true);
 	}
 
 	@Override

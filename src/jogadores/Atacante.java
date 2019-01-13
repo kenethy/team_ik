@@ -24,16 +24,55 @@ public class Atacante extends PlayerBase {
 			ballPos = fieldPerc.getBall().getPosition();
 			switch (matchPerc.getState()) {
 			
-			case OFFSIDE_LEFT: break;
-			case OFFSIDE_RIGHT: break;
-			case FREE_KICK_LEFT: break;
-			case FREE_KICK_RIGHT: break;
-			case KICK_IN_LEFT: break;
-			case KICK_IN_RIGHT: break;
-			case GOAL_KICK_LEFT: break;
-			case GOAL_KICK_RIGHT: break;
+			case OFFSIDE_LEFT:
+				if (side == EFieldSide.LEFT){
+
+				}
+				break;
+			case OFFSIDE_RIGHT:
+				if (side == EFieldSide.RIGHT){
+
+				}
+				break;
+			case FREE_KICK_LEFT: 
+				if (side == EFieldSide.LEFT){
+					if (getClosestPlayerPoint(ballPos, side, 4).getUniformNumber() == selfPerc.getUniformNumber()){
+						dash(ballPos);
+						kickToPoint(getClosestPlayerPoint(selfPerc.getPosition().sum(new Vector2D(0, 5)), side, 4).getPosition(), 50);
+					}
+				}
+				break;
+			case FREE_KICK_RIGHT:
+				if (side == EFieldSide.RIGHT){
+					if (getClosestPlayerPoint(ballPos, side, 4).getUniformNumber() == selfPerc.getUniformNumber()){
+						dash(ballPos);
+						kickToPoint(getClosestPlayerPoint(selfPerc.getPosition().sum(new Vector2D(0, 5)), side, 4).getPosition(), 50);
+					}
+				}
+				break;
+			case KICK_IN_LEFT: 
+				if (side == EFieldSide.LEFT){
+
+				}
+				break;
+			case KICK_IN_RIGHT: 
+				if (side == EFieldSide.RIGHT){
+
+				}
+				break;
+			case GOAL_KICK_LEFT:
+				if (side == EFieldSide.LEFT){
+
+				}
+				break;
+			case GOAL_KICK_RIGHT: 
+				if (side == EFieldSide.RIGHT){
+
+				}
+				break;
+			
 			case BEFORE_KICK_OFF:
-				commander.doMoveBlocking(xInit, yInit);
+				commander.doMoveBlocking(xInit * side.value(), yInit * side.value());
 				break;
 			case KICK_OFF_LEFT: setPlayerRecebendo(-1);
 			case KICK_OFF_RIGHT: setPlayerRecebendo(-1);
@@ -65,7 +104,7 @@ public class Atacante extends PlayerBase {
 								turnToPoint(posTemp);
 								//Vector2D vTempF = posTemp.sub(selfPerc.getPosition());
 								double intensity = (posTemp.magnitude() * 100) / 20;
-								System.out.println(posTemp.magnitude() + "*100 / 40 = "+ posTemp.magnitude()*100 / 40);
+								//System.out.println(posTemp.magnitude() + "*100 / 40 = "+ posTemp.magnitude()*100 / 40);
 								setPlayerRecebendo(p.getUniformNumber());
 								kickToPoint(posTemp, intensity);
 							} else {
@@ -80,7 +119,7 @@ public class Atacante extends PlayerBase {
 				} else {
 					// se não estou perto da bola, corre até ela
 					pTemp = getClosestPlayerPoint(ballPos, side, 3);
-					System.out.println("else perto bola;  pTemp:" + pTemp.getUniformNumber());
+					//System.out.println("else perto bola;  pTemp:" + pTemp.getUniformNumber());
 					if ((pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber()
 							&& getPlayerRecebendo() == -1) || getPlayerRecebendo() == selfPerc.getUniformNumber()) {
 						// pega a bola

@@ -23,24 +23,62 @@ public class Defensor extends PlayerBase {
 			updatePerceptions();
 			ballPos = fieldPerc.getBall().getPosition();
 			switch (matchPerc.getState()) {
-			
-			case OFFSIDE_LEFT: break;
-			case OFFSIDE_RIGHT: break;
-			case FREE_KICK_LEFT: break;
-			case FREE_KICK_RIGHT: break;
-			case KICK_IN_LEFT: break;
-			case KICK_IN_RIGHT: break;
-			case GOAL_KICK_LEFT: break;
-			case GOAL_KICK_RIGHT: break;
+
+			case OFFSIDE_LEFT:
+				if (side == EFieldSide.LEFT){
+
+				}
+				break;
+			case OFFSIDE_RIGHT:
+				if (side == EFieldSide.RIGHT){
+
+				}
+				break;
+			case FREE_KICK_LEFT: 
+				if (side == EFieldSide.LEFT){
+					if (getClosestPlayerPoint(ballPos, side, 4).getUniformNumber() == selfPerc.getUniformNumber()){
+						dash(ballPos);
+						kickToPoint(getClosestPlayerPoint(selfPerc.getPosition().sum(new Vector2D(0, 5)), side, 4).getPosition(), 50);
+					}
+				}
+				break;
+			case FREE_KICK_RIGHT:
+				if (side == EFieldSide.RIGHT){
+					if (getClosestPlayerPoint(ballPos, side, 4).getUniformNumber() == selfPerc.getUniformNumber()){
+						dash(ballPos);
+						kickToPoint(getClosestPlayerPoint(selfPerc.getPosition().sum(new Vector2D(0, 5)), side, 4).getPosition(), 50);
+					}
+				}
+				break;
+			case KICK_IN_LEFT: 
+				if (side == EFieldSide.LEFT){
+
+				}
+				break;
+			case KICK_IN_RIGHT: 
+				if (side == EFieldSide.RIGHT){
+
+				}
+				break;
+			case GOAL_KICK_LEFT:
+				if (side == EFieldSide.LEFT){
+
+				}
+				break;
+			case GOAL_KICK_RIGHT: 
+				if (side == EFieldSide.RIGHT){
+
+				}
+				break;
 			case BEFORE_KICK_OFF:
-				commander.doMoveBlocking(xInit, yInit);
+				commander.doMoveBlocking(xInit * side.value(), yInit * side.value());
 				break;
 			case KICK_OFF_LEFT: setPlayerRecebendo(-1);
 			case KICK_OFF_RIGHT: setPlayerRecebendo(-1);
 			case PLAY_ON:
 				// POSSE DE BOLA
 				if (isBallPossession()) { 
-					System.out.println("posse de bola a favor");
+					//System.out.println("posse de bola a favor");
 					// Posse de bola e realização de toques
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 						setBallPossession(true);
@@ -71,7 +109,7 @@ public class Defensor extends PlayerBase {
 					}
 				} else {
 					// SEM A POSSE DA BOLA
-					System.out.println("Sem a posse da bola");
+					//System.out.println("Sem a posse da bola");
 					// Quando o ataque chegar perto do defensor
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 12)) {
 						// ir ate a bola
@@ -81,7 +119,7 @@ public class Defensor extends PlayerBase {
 					}
 				}
 				break;
-			/* Todos os estados da partida */
+				/* Todos os estados da partida */
 			default:
 				break;
 			}

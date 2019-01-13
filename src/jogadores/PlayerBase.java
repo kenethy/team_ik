@@ -59,7 +59,7 @@ public class PlayerBase {
 			return;
 		if (!isAlignToPoint(point, 15))
 			turnToPoint(point);
-		commander.doDashBlocking(70);
+		commander.doDashBlocking(95);
 	}
 
 	protected boolean isAlignToPoint(Vector2D point, double margin) {

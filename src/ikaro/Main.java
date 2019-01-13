@@ -7,6 +7,7 @@ import team.legacy.A1.*;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
+		CommandTeam westHam = new CommandTeam();
 		CommandTeam teamA = new CommandTeam();
 		// para lançar o outro time, basta importar o pacote dele e chamar sua main
 		// antes ou depois do nosso launchTeam e/ou launchTeamAndServer
@@ -14,12 +15,14 @@ public class Main {
 		// se não, lança o time e o servidor
 		if (isProcessRunning()) {
 			// so inverter a ordem para trocar os lados
+			westHam.launchTeam();
 			teamA.launchTeam();
-			MainA1.main(args);
+			//MainA1.main(args);
 		} else {
 			// so inverter a ordem para trocar os lados
-			teamA.launchTeamAndServer();
-			MainA1.main(args);
+			westHam.launchTeamAndServer();
+			teamA.launchTeam();
+		//	MainA1.main(args);
 
 		}
 
