@@ -88,6 +88,7 @@ public class PlayerBase {
 			double dist, temp;
 			dist = lp.get(0).getPosition().distanceTo(point);
 			np = lp.get(0);
+			//TODO Adicionar parametro para ignorar o prorio player
 			if (isPointsAreClose(np.getPosition(), point, margin))
 				return np;
 			for (PlayerPerception p : lp) {
