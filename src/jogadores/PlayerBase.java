@@ -81,25 +81,28 @@ public class PlayerBase {
 		return reference.distanceTo(point) <= margin;
 	}
 
-	protected PlayerPerception getClosestPlayerPoint(Vector2D point, EFieldSide side, double margin) {
+	//ignoreUniform para que a função ignore o uniforme passado como parametro. Se for 0, não irá ignorar nenhum
+	protected PlayerPerception getClosestPlayerPoint(Vector2D point, EFieldSide side, double margin, int ignoreUniform) {
 		ArrayList<PlayerPerception> lp = fieldPerc.getTeamPlayers(side);
 		PlayerPerception np = null;
 		if (lp != null && !lp.isEmpty()) {
-			double dist, temp;
+			double dist=0, temp;
 			dist = lp.get(0).getPosition().distanceTo(point);
 			np = lp.get(0);
-			//TODO Adicionar parametro para ignorar o prorio player
+
 			if (isPointsAreClose(np.getPosition(), point, margin))
 				return np;
 			for (PlayerPerception p : lp) {
-				if (p.getPosition() == null)
-					break;
-				if (isPointsAreClose(p.getPosition(), point, margin))
-					return p;
-				temp = p.getPosition().distanceTo(point);
-				if (temp < dist) {
-					dist = temp;
-					np = p;
+				if (p.getUniformNumber() != ignoreUniform){
+					if (p.getPosition() == null)
+						break;
+					if (isPointsAreClose(p.getPosition(), point, margin))
+						return p;
+					temp = p.getPosition().distanceTo(point);
+					if (temp < dist) {
+						dist = temp;
+						np = p;
+					}
 				}
 			}
 		}
@@ -131,5 +134,22 @@ public class PlayerBase {
 			}
 		}
 		return true;
+	}
+	
+
+	//TODO melhorar o posicionamento em relação a bola (pois ele esta indo para a posição da bola) pra chutar na direção certa
+	protected void correrEChutar(Vector2D ballPos, EFieldSide side){
+		//se eu sou o player mais perto da bola
+		if (getClosestPlayerPoint(ballPos, side, 4, 0).getUniformNumber() == selfPerc.getUniformNumber()){
+			//corre ate a bola
+			dash(ballPos);
+			//se estou na posicao da bola
+			if (isPointsAreClose(selfPerc.getPosition(), ballPos, 3)){
+				//chuta para o player mais perto, ignorando eu mesmo
+				Vector2D nextFriend = getClosestPlayerPoint(selfPerc.getPosition(), side, 4, selfPerc.getUniformNumber()).getPosition();  
+				turnToPoint(nextFriend);
+				kickToPoint(nextFriend, 50);
+			}
+		}
 	}
 }

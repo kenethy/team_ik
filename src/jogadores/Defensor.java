@@ -26,38 +26,32 @@ public class Defensor extends PlayerBase {
 
 			case OFFSIDE_LEFT:
 				if (side == EFieldSide.LEFT){
-
+					correrEChutar(ballPos, side);
 				}
 				break;
 			case OFFSIDE_RIGHT:
 				if (side == EFieldSide.RIGHT){
-
+					correrEChutar(ballPos, side);
 				}
 				break;
 			case FREE_KICK_LEFT: 
 				if (side == EFieldSide.LEFT){
-					if (getClosestPlayerPoint(ballPos, side, 4).getUniformNumber() == selfPerc.getUniformNumber()){
-						dash(ballPos);
-						kickToPoint(getClosestPlayerPoint(selfPerc.getPosition().sum(new Vector2D(0, 5)), side, 4).getPosition(), 50);
-					}
+					correrEChutar(ballPos, side);
 				}
 				break;
 			case FREE_KICK_RIGHT:
 				if (side == EFieldSide.RIGHT){
-					if (getClosestPlayerPoint(ballPos, side, 4).getUniformNumber() == selfPerc.getUniformNumber()){
-						dash(ballPos);
-						kickToPoint(getClosestPlayerPoint(selfPerc.getPosition().sum(new Vector2D(0, 5)), side, 4).getPosition(), 50);
-					}
+					correrEChutar(ballPos, side);
 				}
 				break;
 			case KICK_IN_LEFT: 
 				if (side == EFieldSide.LEFT){
-
+					correrEChutar(ballPos, side);
 				}
 				break;
 			case KICK_IN_RIGHT: 
 				if (side == EFieldSide.RIGHT){
-
+					correrEChutar(ballPos, side);
 				}
 				break;
 			case GOAL_KICK_LEFT:
@@ -68,6 +62,16 @@ public class Defensor extends PlayerBase {
 			case GOAL_KICK_RIGHT: 
 				if (side == EFieldSide.RIGHT){
 
+				}
+				break;
+			case CORNER_KICK_LEFT:
+				if (side == EFieldSide.LEFT){
+					correrEChutar(ballPos, side);
+				}
+				break;
+			case CORNER_KICK_RIGHT:
+				if (side == EFieldSide.RIGHT){
+					correrEChutar(ballPos, side);
 				}
 				break;
 			case BEFORE_KICK_OFF:
@@ -95,7 +99,7 @@ public class Defensor extends PlayerBase {
 						setBallPossession(false);
 						// Sem a bola, caso esteja próximo ir ate a bola
 					} else {
-						pTemp = getClosestPlayerPoint(ballPos, side, 3);
+						pTemp = getClosestPlayerPoint(ballPos, side, 3, 0);
 						if (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber()) {
 							// pega a bola
 							dash(ballPos);
@@ -115,7 +119,8 @@ public class Defensor extends PlayerBase {
 						// ir ate a bola
 						dash(ballPos);
 						// chutar em direcao ao gol
-						kickToPoint(new Vector2D(50 * side.value(), 0), 50);
+						if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2) )
+							kickToPoint(new Vector2D(50 * side.value(), 0), 50);
 					}
 				}
 				break;

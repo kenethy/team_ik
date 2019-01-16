@@ -25,38 +25,32 @@ public class Armador extends PlayerBase {
 			
 			case OFFSIDE_LEFT:
 				if (side == EFieldSide.LEFT){
-
+					correrEChutar(ballPos, side);
 				}
 				break;
 			case OFFSIDE_RIGHT:
 				if (side == EFieldSide.RIGHT){
-
+					correrEChutar(ballPos, side);
 				}
 				break;
 			case FREE_KICK_LEFT: 
 				if (side == EFieldSide.LEFT){
-					if (getClosestPlayerPoint(ballPos, side, 4).getUniformNumber() == selfPerc.getUniformNumber()){
-						dash(ballPos);
-						kickToPoint(getClosestPlayerPoint(selfPerc.getPosition().sum(new Vector2D(0, 5)), side, 4).getPosition(), 50);
-					}
+					correrEChutar(ballPos, side);
 				}
 				break;
 			case FREE_KICK_RIGHT:
 				if (side == EFieldSide.RIGHT){
-					if (getClosestPlayerPoint(ballPos, side, 4).getUniformNumber() == selfPerc.getUniformNumber()){
-						dash(ballPos);
-						kickToPoint(getClosestPlayerPoint(selfPerc.getPosition().sum(new Vector2D(0, 5)), side, 4).getPosition(), 50);
-					}
+					correrEChutar(ballPos, side);
 				}
 				break;
 			case KICK_IN_LEFT: 
 				if (side == EFieldSide.LEFT){
-
+					correrEChutar(ballPos, side);
 				}
 				break;
 			case KICK_IN_RIGHT: 
 				if (side == EFieldSide.RIGHT){
-
+					correrEChutar(ballPos, side);
 				}
 				break;
 			case GOAL_KICK_LEFT:
@@ -69,7 +63,16 @@ public class Armador extends PlayerBase {
 
 				}
 				break;
-
+			case CORNER_KICK_LEFT:
+				if (side == EFieldSide.LEFT){
+					correrEChutar(ballPos, side);
+				}
+				break;
+			case CORNER_KICK_RIGHT:
+				if (side == EFieldSide.RIGHT){
+					correrEChutar(ballPos, side);
+				}
+				break;
 			case BEFORE_KICK_OFF:
 				commander.doMoveBlocking(xInit * side.value(), yInit * side.value());
 				break;
@@ -116,7 +119,7 @@ public class Armador extends PlayerBase {
 					setBallPossession(false);
 
 				} else { // se não estou perto da bola, corre até ela
-					pTemp = getClosestPlayerPoint(ballPos, side, 3);
+					pTemp = getClosestPlayerPoint(ballPos, side, 3, 0);
 					if ((pTemp != null && (pTemp.getUniformNumber() == selfPerc.getUniformNumber())
 							&& getPlayerRecebendo() == -1) || getPlayerRecebendo() == selfPerc.getUniformNumber()) {
 						// pega a bola

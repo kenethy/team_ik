@@ -3,7 +3,7 @@ package ikaro;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import team.legacy.A1.*;
+//import team.legacy.A1.*;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
