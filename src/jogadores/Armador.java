@@ -65,11 +65,13 @@ public class Armador extends PlayerBase {
 				break;
 			case CORNER_KICK_LEFT:
 				if (side == EFieldSide.LEFT){
+					// Posicionar um jogador dentro da area e tocar para ele
 					correrEChutar(ballPos, side);
 				}
 				break;
 			case CORNER_KICK_RIGHT:
 				if (side == EFieldSide.RIGHT){
+					// Posicionar um jogador dentro da area e tocar para ele
 					correrEChutar(ballPos, side);
 				}
 				break;

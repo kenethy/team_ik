@@ -10,7 +10,7 @@ import simple_soccer_lib.PlayerCommander;
 //import simple_soccer_lib.perception.PlayerPerception;
 
 public class Goleiro extends PlayerBase {
-
+	int localState = 0;
 	Vector2D ballPos0, ballPos1; //para calcular para onde a bola está indo
 
 	public Goleiro(PlayerCommander player) {
@@ -23,7 +23,7 @@ public class Goleiro extends PlayerBase {
 		Vector2D initPos = new Vector2D(xInit * side.value(), yInit * side.value());
 		Vector2D goalPos = new Vector2D(50 * side.value(), 0);
 		Vector2D ballPos;
-		//PlayerPerception pTemp = null;
+		// PlayerPerception pTemp = null;
 		Rectangle area = side == EFieldSide.LEFT ? new Rectangle(-52, -20, 16, 40) : new Rectangle(36, -20, 16, 40);
 
 		while (true) {
@@ -36,38 +36,45 @@ public class Goleiro extends PlayerBase {
 				commander.doMoveBlocking(xInit * side.value(), yInit * side.value());
 				break;
 
-			case OFFSIDE_LEFT: break;
-			case OFFSIDE_RIGHT: break;
-			case KICK_OFF_LEFT: 
+			case OFFSIDE_LEFT:
+				break;
+			case OFFSIDE_RIGHT:
+				break;
+			case KICK_OFF_LEFT:
 				dash(new Vector2D(xInit * side.value(), ballPos.getY() / 5));
 				break;
-			case KICK_OFF_RIGHT: 
+			case KICK_OFF_RIGHT:
 				dash(new Vector2D(xInit * side.value(), ballPos.getY() / 5));
 				break;
-			case FREE_KICK_LEFT: break;
-			case FREE_KICK_RIGHT: break;
-			case KICK_IN_LEFT: break;
-			case KICK_IN_RIGHT: break;
-			case GOAL_KICK_LEFT: 
-				if (side == EFieldSide.LEFT){
-					dash(ballPos); //commander.doMoveBlocking(ballPos.getX(), ballPos.getY());
-					//TODO Colocar se a condição do goleiro for igual a da bola chutar
-					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2) )
-						kickToPoint(goalPos, 85);
+			case FREE_KICK_LEFT:
+				break;
+			case FREE_KICK_RIGHT:
+				break;
+			case KICK_IN_LEFT:
+				break;
+			case KICK_IN_RIGHT:
+				break;
+			case GOAL_KICK_LEFT:
+				if (side == EFieldSide.LEFT) {
+					commander.doMoveBlocking(ballPos.getX(), ballPos.getY());
+					// TODO Colocar se a condição do goleiro for igual a da bola chutar
+					turnToPoint(goalPos);
+					kickToPoint(goalPos, 85);
+					// Pode ser feito a verificação de um jogador proximo para receber a bola
 				}
 				break;
-			case GOAL_KICK_RIGHT: 
-				if (side == EFieldSide.RIGHT){
-					dash(ballPos);//commander.doMoveBlocking(ballPos.getX(), ballPos.getY());
-					//TODO Colocar se a condição do goleiro for igual a da bola chutar
-					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 3))
-						kickToPoint(goalPos, 85);
+			case GOAL_KICK_RIGHT:
+				if (side == EFieldSide.RIGHT) {
+					commander.doMoveBlocking(ballPos.getX(), ballPos.getY());
+					// TODO Colocar se a condição do goleiro for igual a da bola chutar
+					turnToPoint(goalPos);
+					kickToPoint(goalPos, 85);
 				}
 				break;
 			case PLAY_ON:
-				//System.out.println(ballPos.angleFrom(selfPerc.getPosition()));
-				int localState = 0;
-				switch (localState){
+				// System.out.println(ballPos.angleFrom(selfPerc.getPosition()));
+
+				switch (localState) {
 
 				case 0: // posicionar para receber a bola
 					ballPos1 = ballPos;
@@ -78,14 +85,13 @@ public class Goleiro extends PlayerBase {
 					// Y do gol varia de -7 a 7
 					// na equação da reta, quando X for -50, qnt será Y? y – y0 = m (x – x0)
 					double y;
-					y = ballPos1.getY() + (coefAng * ((-50 * side.value()) - ballPos.getX())); // -50 * sideValue para
-																								// saber qual lado é meu
-																								// gol
+					// -50 * sideValue para saber qual lado é meu gol
+					y = ballPos1.getY() + (coefAng * ((-50 * side.value()) - ballPos.getX()));
 					if (Double.isNaN(y) || Double.isInfinite(y))
 						y = 0;
 					Vector2D bolaNoGol = new Vector2D(-50 * side.value(), y);
-					//System.out.println("Bola no Gol: " + bolaNoGol);
-					//System.out.println("BallPos 0 e 1:" + ballPos0 + " " + ballPos1);
+					System.out.println("Bola no Gol: " + bolaNoGol);
+					System.out.println("BallPos 0 e 1:" + ballPos0 + " " + ballPos1);
 					System.out.println("Estado goleiro: " + localState);
 					dash(new Vector2D(xInit * side.value(), ballPos.getY() / 5));
 					if (bolaNoGol.getY() <= 7 && bolaNoGol.getY() >= -7) {
@@ -93,8 +99,8 @@ public class Goleiro extends PlayerBase {
 								|| (side == EFieldSide.RIGHT && ballPos.getX() > 0)) // verificar se a bola esta na
 																						// minha metade do campo
 							dash(bolaNoGol);
-						if (isPointsAreClose(selfPerc.getPosition(), bolaNoGol, 2) )
-							localState = 1;
+						// TODO verificar se chegou no dash
+						localState = 1;
 					} else if (area.contains(ballPos.getX(), ballPos.getY())) {
 						localState = 3;
 					}
@@ -104,20 +110,16 @@ public class Goleiro extends PlayerBase {
 
 				case 1: // agarrar a bola
 					System.out.println("Estado goleiro: " + localState);
-					//TODO verificar se chegou no dash e se a bola está na area do goleiro					
-					//dash(ballPos); // aguardar a bola chegar até ele
-					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)){
-						kickToPoint(goalPos, 2);
-						localState = 2;
-					}
+					// TODO verificar se chegou no dash e se a bola está na area do goleiro
+					dash(ballPos); // aguardar a bola chegar até ele
+					kickToPoint(goalPos, 2);
+					localState = 2;
 					break;
 
 				case 2: // chutar a bola
 					System.out.println("Estado goleiro: " + localState);
-					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2)){
-						kickToPoint(goalPos, 85);
-						localState = 0;
-					}
+					kickToPoint(goalPos, 85);
+					localState = 0;
 					break;
 
 				case 3: // perseguir a bola

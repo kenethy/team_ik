@@ -136,19 +136,26 @@ public class PlayerBase {
 		return true;
 	}
 	
-
-	//TODO melhorar o posicionamento em relação a bola (pois ele esta indo para a posição da bola) pra chutar na direção certa
-	protected void correrEChutar(Vector2D ballPos, EFieldSide side){
-		//se eu sou o player mais perto da bola
-		if (getClosestPlayerPoint(ballPos, side, 4, 0).getUniformNumber() == selfPerc.getUniformNumber()){
-			//corre ate a bola
+	
+	/**
+	 * TODO melhorar o posicionamento em relação a bola (pois ele esta indo para a
+	 * posição da bola pra chutar na direção certa
+	 * 
+	 * @param ballPos
+	 * @param side
+	 */
+	protected void correrEChutar(Vector2D ballPos, EFieldSide side) {
+		// se eu sou o player mais perto da bola
+		if (getClosestPlayerPoint(ballPos, side, 4, 0).getUniformNumber() == selfPerc.getUniformNumber()) {
+			// corre ate a bola
 			dash(ballPos);
-			//se estou na posicao da bola
-			if (isPointsAreClose(selfPerc.getPosition(), ballPos, 3)){
-				//chuta para o player mais perto, ignorando eu mesmo
-				Vector2D nextFriend = getClosestPlayerPoint(selfPerc.getPosition(), side, 4, selfPerc.getUniformNumber()).getPosition();  
+			// se estou na posicao da bola
+			if (isPointsAreClose(selfPerc.getPosition(), ballPos, 3)) {
+				// chuta para o player mais perto, ignorando eu mesmo
+				Vector2D nextFriend = getClosestPlayerPoint(selfPerc.getPosition(), side, 4,
+						selfPerc.getUniformNumber()).getPosition();
 				turnToPoint(nextFriend);
-				kickToPoint(nextFriend, 50);
+				kickToPoint(nextFriend, 60);
 			}
 		}
 	}
