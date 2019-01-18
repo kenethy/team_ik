@@ -41,10 +41,10 @@ public class Goleiro extends PlayerBase {
 			case OFFSIDE_RIGHT:
 				break;
 			case KICK_OFF_LEFT:
-				dash(new Vector2D(xInit * side.value(), ballPos.getY() / 5));
+				dash(new Vector2D(xInit * side.value(), ballPos.getY() / 5), 70);
 				break;
 			case KICK_OFF_RIGHT:
-				dash(new Vector2D(xInit * side.value(), ballPos.getY() / 5));
+				dash(new Vector2D(xInit * side.value(), ballPos.getY() / 5), 70);
 				break;
 			case FREE_KICK_LEFT:
 				break;
@@ -77,67 +77,79 @@ public class Goleiro extends PlayerBase {
 				switch (localState) {
 
 				case 0: // posicionar para receber a bola
+					System.out.println("Estado goleiro: " + localState + selfPerc.getTeam());
 					ballPos1 = ballPos;
 					// Vector2D ballPos2 = ballPos1.sub(ballPos0);
 					// calcular coeficiente angular da reta para poder formular a equação da reta
-					double coefAng = (ballPos1.getY() - ballPos0.getY()) / (ballPos1.getX() - ballPos0.getX());
-
-					// Y do gol varia de -7 a 7
-					// na equação da reta, quando X for -50, qnt será Y? y – y0 = m (x – x0)
-					double y;
-					// -50 * sideValue para saber qual lado é meu gol
-					y = ballPos1.getY() + (coefAng * ((-50 * side.value()) - ballPos.getX()));
-					if (Double.isNaN(y) || Double.isInfinite(y))
-						y = 0;
-					Vector2D bolaNoGol = new Vector2D(-50 * side.value(), y);
-					System.out.println("Bola no Gol: " + bolaNoGol);
-					System.out.println("BallPos 0 e 1:" + ballPos0 + " " + ballPos1);
-					System.out.println("Estado goleiro: " + localState);
-					dash(new Vector2D(xInit * side.value(), ballPos.getY() / 5));
-					if (bolaNoGol.getY() <= 7 && bolaNoGol.getY() >= -7) {
-						if ((side == EFieldSide.LEFT && ballPos.getX() < 0)
-								|| (side == EFieldSide.RIGHT && ballPos.getX() > 0)) // verificar se a bola esta na
-																						// minha metade do campo
-							dash(bolaNoGol);
-						// TODO verificar se chegou no dash
-						if(isPointsAreClose(selfPerc.getPosition(), bolaNoGol, 2))
-							localState = 1;
-					} else if (area.contains(ballPos.getX(), ballPos.getY())) {
+					
+					if (area.contains(ballPos.getX(), ballPos.getY())) 
 						localState = 3;
-					}
-					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2)) // se estiver perto da bola
+
+					if ((side == EFieldSide.LEFT && ballPos.getX() < 0)
+							|| (side == EFieldSide.RIGHT && ballPos.getX() > 0)){
+						double coefAng = (ballPos1.getY() - ballPos0.getY()) / (ballPos1.getX() - ballPos0.getX());
+
+						// Y do gol varia de -7 a 7
+						// na equação da reta, quando X for -50, qnt será Y? y – y0 = m (x – x0)
+						double y;
+						// -50 * sideValue para saber qual lado é meu gol
+						y = ballPos1.getY() + (coefAng * ((-50 * side.value()) - ballPos.getX()));
+						if (Double.isNaN(y) || Double.isInfinite(y))
+							y = 0;
+						Vector2D bolaNoGol = new Vector2D(-50 * side.value(), y);
+						//System.out.println("Bola no Gol: " + bolaNoGol);
+						//System.out.println("BallPos 0 e 1:" + ballPos0 + " " + ballPos1);
+						//dash(new Vector2D(xInit * side.value(), ballPos.getY() / 5));
+						if (bolaNoGol.getY() <= 7 && bolaNoGol.getY() >= -7) { // verificar se a bola esta na
+							// minha metade do campo
+							dash(bolaNoGol, 100);
+						}
+						// TODO verificar se chegou no dash
+						if(isPointsAreClose(selfPerc.getPosition(), bolaNoGol, 1.2))
+							localState = 1;
+					} else if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1.2)) // se estiver perto da bola
 						localState = 1; // ir para o estado 1
 					break;
 
 				case 1: // agarrar a bola
-					System.out.println("Estado goleiro: " + localState);
+					System.out.println("Estado goleiro: " + localState + selfPerc.getTeam());
 					// TODO verificar se chegou no dash e se a bola está na area do goleiro
 					// Nesse caso seria o contrario, enquanto não estiver a 1 de margen da bola ir até ela
 					// verificar esse caso pois é o 3, o 3, não está funcionando
-					while(!isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
-						dash(ballPos); // aguardar a bola chegar até ele
-					}
-					kickToPoint(goalPos, 2);
-					localState = 2;
+					//while(!isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
+					//if (!isPointsAreClose(selfPerc.getPosition(), ballPos, 2))
+						//dash(ballPos); // aguardar a bola chegar até ele
+					//}
+					
+					commander.doCatchBlocking(0);
+					//kickToPoint(goalPos, 2);
+					//kickToPoint(goalPos, 2);
+					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2))
+						localState = 2;
+					else
+						localState = 0;
 					break;
 
 				case 2: // chutar a bola
 					System.out.println("Estado goleiro: " + localState);
 					// Enquanto a bola estiver perto dele chutar
-					while(isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
+					//while(isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) { //tirei pois ele ficava parado no estado 2 e nao fazia mais nada
+					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2))
 						kickToPoint(goalPos, 85);
-					}
+					//}
+					else
+						localState = 3;
 					localState = 0;
 					break;
 
 				case 3: // perseguir a bola
 					System.out.println("Estado goleiro: " + localState);
 					if (area.contains(ballPos.getX(), ballPos.getY())) {
-						dash(ballPos);
-						if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1))
+						dash(ballPos, 100);
+						if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1.2))
 							localState = 1;
 					} else {
-						dash(initPos);
+						dash(initPos, 70);
 						localState = 0;
 					}
 					break;

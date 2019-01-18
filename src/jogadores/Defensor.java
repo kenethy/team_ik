@@ -102,10 +102,10 @@ public class Defensor extends PlayerBase {
 						pTemp = getClosestPlayerPoint(ballPos, side, 3, 0);
 						if (pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber()) {
 							// pega a bola
-							dash(ballPos);
+							dash(ballPos, 85);
 						} else if (!isPointsAreClose(selfPerc.getPosition(), initPos, 3)) {
 							// recuar - retornar a posição inicial (movimentação sem a bola
-							dash(initPos);
+							dash(initPos, 70);
 						} else {
 							// olha para a bola
 							turnToPoint(ballPos);
@@ -117,7 +117,7 @@ public class Defensor extends PlayerBase {
 					// Quando o ataque chegar perto do defensor
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 12)) {
 						// ir ate a bola
-						dash(ballPos);
+						dash(ballPos, 100);
 						// chutar em direcao ao gol
 						if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2) )
 							kickToPoint(new Vector2D(50 * side.value(), 0), 50);

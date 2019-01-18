@@ -54,12 +54,12 @@ public class PlayerBase {
 		commander.doTurnToDirectionBlocking(newDirection);
 	}
 
-	protected void dash(Vector2D point) {
+	protected void dash(Vector2D point, int speed) {
 		if (selfPerc.getPosition().distanceTo(point) <= 1)
 			return;
 		if (!isAlignToPoint(point, 15))
 			turnToPoint(point);
-		commander.doDashBlocking(95);
+		commander.doDashBlocking(speed);
 	}
 
 	protected boolean isAlignToPoint(Vector2D point, double margin) {
@@ -144,18 +144,21 @@ public class PlayerBase {
 	 * @param side
 	 */
 	protected void correrEChutar(Vector2D ballPos, EFieldSide side) {
-		// se eu sou o player mais perto da bola
-		if (getClosestPlayerPoint(ballPos, side, 4, 0).getUniformNumber() == selfPerc.getUniformNumber()) {
+		PlayerPerception playerMaisProximo = getClosestPlayerPoint(ballPos, side, 2, 0);
+		PlayerPerception amigoMaisProximo = getClosestPlayerPoint(ballPos, side, 2, playerMaisProximo.getUniformNumber());
+		if (amigoMaisProximo.getUniformNumber() == selfPerc.getUniformNumber())
+			dash(ballPos, 70);
+		if (playerMaisProximo.getUniformNumber() == selfPerc.getUniformNumber()) { // se o player mais proximo sou eu
 			// corre ate a bola
-			dash(ballPos);
+			dash(ballPos, 90);
 			// se estou na posicao da bola
-			if (isPointsAreClose(selfPerc.getPosition(), ballPos, 3)) {
-				// chuta para o player mais perto, ignorando eu mesmo
-				Vector2D nextFriend = getClosestPlayerPoint(selfPerc.getPosition(), side, 4,
-						selfPerc.getUniformNumber()).getPosition();
-				turnToPoint(nextFriend);
-				kickToPoint(nextFriend, 60);
+			if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2)) {
+				// chuta para o amigo mais perto
+				turnToPoint(amigoMaisProximo.getPosition());
+				kickToPoint(amigoMaisProximo.getPosition(), 60);
+				setPlayerRecebendo(amigoMaisProximo.getUniformNumber());
 			}
 		}
+		
 	}
 }

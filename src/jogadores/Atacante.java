@@ -86,11 +86,11 @@ public class Atacante extends PlayerBase {
 					// e não vou receber a bola
 					if (selfPerc.getUniformNumber() == 7 && getPlayerRecebendo() != 7 && getPlayerRecebendo() != -1)
 						// acompanha a bola com companheiro
-						dash(new Vector2D(ballPos.getX() + 10 * side.value(), -15));
+						dash(new Vector2D(ballPos.getX() + 10 * side.value(), -15), 70);
 					// se nao for camisa 7, é o camisa 6 atacante, vai para o gol adversario
 					else if (selfPerc.getUniformNumber() == 6 && getPlayerRecebendo() != 6
 							&& getPlayerRecebendo() != -1)
-						dash(new Vector2D(goalPos.getX() - 20 * side.value(), 15));
+						dash(new Vector2D(goalPos.getX() - 20 * side.value(), 15), 70);
 					// Colocar para ele verificar a posicao do ultimo jogador
 				}
 				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) { // se estou perto da bola
@@ -129,7 +129,7 @@ public class Atacante extends PlayerBase {
 					if ((pTemp != null && pTemp.getUniformNumber() == selfPerc.getUniformNumber()
 							&& getPlayerRecebendo() == -1) || getPlayerRecebendo() == selfPerc.getUniformNumber()) {
 						// pega a bola
-						dash(ballPos);
+						dash(ballPos, 95);
 					} else if (!isPointsAreClose(selfPerc.getPosition(), initPos, 3)) {
 						// recua
 						// dash(initPos);
