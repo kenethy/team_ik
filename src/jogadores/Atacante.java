@@ -115,6 +115,7 @@ public class Atacante extends PlayerBase {
 							} else {
 								setBallPossession(true);
 								kickToPoint(goalPos, 15); // conduz para o gol
+								
 							}
 						} else {
 							setBallPossession(true);

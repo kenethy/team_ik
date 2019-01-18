@@ -103,6 +103,7 @@ public class Goleiro extends PlayerBase {
 						localState = 1;
 					} else if (area.contains(ballPos.getX(), ballPos.getY())) {
 						localState = 3;
+						
 					}
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2)) // se estiver perto da bola
 						localState = 1; // ir para o estado 1

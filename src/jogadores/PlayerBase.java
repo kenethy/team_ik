@@ -140,7 +140,6 @@ public class PlayerBase {
 	/**
 	 * TODO melhorar o posicionamento em relação a bola (pois ele esta indo para a
 	 * posição da bola pra chutar na direção certa
-	 * 
 	 * @param ballPos
 	 * @param side
 	 */
