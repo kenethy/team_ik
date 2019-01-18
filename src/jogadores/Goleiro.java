@@ -100,10 +100,10 @@ public class Goleiro extends PlayerBase {
 																						// minha metade do campo
 							dash(bolaNoGol);
 						// TODO verificar se chegou no dash
-						localState = 1;
+						if(isPointsAreClose(selfPerc.getPosition(), bolaNoGol, 2))
+							localState = 1;
 					} else if (area.contains(ballPos.getX(), ballPos.getY())) {
 						localState = 3;
-						
 					}
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2)) // se estiver perto da bola
 						localState = 1; // ir para o estado 1
@@ -112,14 +112,21 @@ public class Goleiro extends PlayerBase {
 				case 1: // agarrar a bola
 					System.out.println("Estado goleiro: " + localState);
 					// TODO verificar se chegou no dash e se a bola está na area do goleiro
-					dash(ballPos); // aguardar a bola chegar até ele
+					// Nesse caso seria o contrario, enquanto não estiver a 1 de margen da bola ir até ela
+					// verificar esse caso pois é o 3, o 3, não está funcionando
+					while(!isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
+						dash(ballPos); // aguardar a bola chegar até ele
+					}
 					kickToPoint(goalPos, 2);
 					localState = 2;
 					break;
 
 				case 2: // chutar a bola
 					System.out.println("Estado goleiro: " + localState);
-					kickToPoint(goalPos, 85);
+					// Enquanto a bola estiver perto dele chutar
+					while(isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
+						kickToPoint(goalPos, 85);
+					}
 					localState = 0;
 					break;
 
