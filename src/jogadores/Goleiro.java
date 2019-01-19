@@ -130,7 +130,7 @@ public class Goleiro extends PlayerBase {
 					//}
 					
 					commander.doCatchBlocking(0);
-					//kickToPoint(goalPos, 2);
+					kickToPoint(goalPos, 1);
 					//kickToPoint(goalPos, 2);
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1.2))
 						localState = 2;
