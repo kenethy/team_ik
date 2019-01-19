@@ -47,6 +47,10 @@ public class Goleiro extends PlayerBase {
 				dash(new Vector2D(xInit * side.value(), ballPos.getY() / 5), 70);
 				break;
 			case FREE_KICK_LEFT:
+				if(isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
+					turnToPoint(goalPos);
+					kickToPoint(goalPos, 85);
+				}
 				break;
 			case FREE_KICK_RIGHT:
 				break;
@@ -57,9 +61,13 @@ public class Goleiro extends PlayerBase {
 			case GOAL_KICK_LEFT:
 				if (side == EFieldSide.LEFT) {
 					commander.doMoveBlocking(ballPos.getX(), ballPos.getY());
+					ballPos = fieldPerc.getBall().getPosition();
+					dash(ballPos, 100);
 					// TODO Colocar se a condição do goleiro for igual a da bola chutar
-					turnToPoint(goalPos);
-					kickToPoint(goalPos, 85);
+					if(isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
+						turnToPoint(goalPos);
+						kickToPoint(goalPos, 85);
+					}
 					// Pode ser feito a verificação de um jogador proximo para receber a bola
 				}
 				break;
@@ -124,7 +132,7 @@ public class Goleiro extends PlayerBase {
 					commander.doCatchBlocking(0);
 					//kickToPoint(goalPos, 2);
 					//kickToPoint(goalPos, 2);
-					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2))
+					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1.2))
 						localState = 2;
 					else
 						localState = 0;
@@ -146,10 +154,11 @@ public class Goleiro extends PlayerBase {
 					System.out.println("Estado goleiro: " + localState);
 					if (area.contains(ballPos.getX(), ballPos.getY())) {
 						dash(ballPos, 100);
-						if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1.2))
-							localState = 1;
+						if (isPointsAreClose(selfPerc.getPosition(), ballPos, 0.5)) {
+							kickToPoint(goalPos, 100);
+						}
 					} else {
-						dash(initPos, 70);
+						dash(initPos, 100);
 						localState = 0;
 					}
 					break;
