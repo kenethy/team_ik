@@ -75,7 +75,9 @@ public class Goleiro extends PlayerBase {
 				if (side == EFieldSide.RIGHT) {
 					commander.doMoveBlocking(ballPos.getX(), ballPos.getY());
 					// TODO Colocar se a condição do goleiro for igual a da bola chutar
+					
 					turnToPoint(goalPos);
+					//Thread.sleep(1);
 					kickToPoint(goalPos, 85);
 				}
 				break;
