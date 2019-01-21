@@ -78,8 +78,9 @@ public class Atacante extends PlayerBase {
 			
 			case BEFORE_KICK_OFF:
 				//System.out.println(initPos);
-				if (selfPerc.getPosition() != initPos)
+				//if (selfPerc.getPosition() != initPos)
 					commander.doMoveBlocking(initPos.getX(), initPos.getY());
+					dash(initPos, 100);
 				break;
 			case KICK_OFF_LEFT: 
 				setPlayerRecebendo(-1);
@@ -92,6 +93,15 @@ public class Atacante extends PlayerBase {
 			case PLAY_ON:
 				String playerRecebendo ;
 				switch (localState){
+				
+				case -1: //ir para posição inicial
+					if(isPointsAreClose(selfPerc.getPosition(), initPos, 2)){
+						turnToPoint(ballPos);
+						localState = 0;
+					} else {
+						dash(initPos, 100);
+					}
+					break;
 				
 				case 0:  //posicao inicial
 					System.out.println("Atacante "+ selfPerc.getUniformNumber() + " " + selfPerc.getTeam() + " " + localState);

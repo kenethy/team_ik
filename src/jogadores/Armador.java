@@ -75,10 +75,10 @@ public class Armador extends PlayerBase {
 				break;
 			case BEFORE_KICK_OFF:
 				//System.out.println(initPos);
-				if (selfPerc.getPosition() != initPos){
+				//if (selfPerc.getPosition() != initPos){
 					commander.doMoveBlocking(initPos.getX(), initPos.getY());
 					dash(initPos, 100);
-				}
+				//}
 				break;
 			case KICK_OFF_LEFT: 
 				setPlayerRecebendo(-1);
@@ -138,7 +138,7 @@ public class Armador extends PlayerBase {
 						dash(ballPos, 100);
 					} else if (!isPointsAreClose(selfPerc.getPosition(), initPos, 3)) {
 						// recua
-						// dash(initPos);
+						 //dash(initPos, 100);
 					} else {
 						// olha para a bola
 						turnToPoint(ballPos);

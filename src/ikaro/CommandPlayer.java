@@ -47,6 +47,7 @@ public class CommandPlayer extends Thread {
 		 * atacante1.acaoAtacante(nextIteration, 15);
 		 * atacante2.acaoAtacante(nextIteration, -15);
 		 */
+		System.out.println(goleiro.selfPerc.getUniformNumber());
 		if (goleiro.selfPerc.getUniformNumber() == 1)
 			goleiro.acaoGoleiro(nextIteration);
 		if (defensor1.selfPerc.getUniformNumber() == 2)

@@ -28,12 +28,16 @@ public class Goleiro extends PlayerBase {
 			ballPos0 = fieldPerc.getBall().getPosition();
 			updatePerceptions();
 			ballPos = fieldPerc.getBall().getPosition();
+			
 			switch (matchPerc.getState()) {
+			
 			case BEFORE_KICK_OFF:
 				// posicao inicial
-				//System.out.println(initPos);
-				if (selfPerc.getPosition() != initPos)
-					commander.doMoveBlocking(initPos.getX(), initPos.getY());
+				//if (selfPerc.getPosition() != initPos) {
+				System.out.println("GK" + selfPerc.getPosition());
+				commander.doMoveBlocking(initPos.getX(), initPos.getY());
+				dash(initPos, 100);
+				//}
 				break;
 
 			case OFFSIDE_LEFT:
@@ -138,8 +142,9 @@ public class Goleiro extends PlayerBase {
 					//}
 					//if(isPointsAreClose(selfPerc.getPosition(), ballPos, 10))
 					//	dash(ballPos, 100);
-					if(isPointsAreClose(selfPerc.getPosition(), ballPos, 1))
-						commander.doCatchBlocking(selfPerc.getPosition().angleFrom(ballPos));
+					//if(isPointsAreClose(selfPerc.getPosition(), ballPos, 1))
+						//commander.doCatchBlocking(selfPerc.getPosition().angleFrom(ballPos));
+					commander.doCatchBlocking(0);
 //					try {
 //						Thread.sleep(100);
 //					} catch (InterruptedException e) {

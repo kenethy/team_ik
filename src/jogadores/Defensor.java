@@ -75,9 +75,10 @@ public class Defensor extends PlayerBase {
 				}
 				break;
 			case BEFORE_KICK_OFF:
-				//System.out.println(initPos);
-				if (selfPerc.getPosition() != initPos)
+				//if (selfPerc.getPosition() != initPos) {
+					System.out.println("DF" + selfPerc.getPosition());
 					commander.doMoveBlocking(initPos.getX(), initPos.getY());
+				//}
 				break;
 			case KICK_OFF_LEFT:
 				setPlayerRecebendo(-1);
