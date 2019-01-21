@@ -145,7 +145,7 @@ public class Atacante extends PlayerBase {
 					double y = point2.getY() + (point2.getY() - ballPos.getY()); //point2.getY() + (coefAng * (point2.getX() - point1.getX()));
 					Vector2D point = new Vector2D(x, y); // novo ponto para calcular trajetoria
 					if (getClosestPlayerPoint(point, side, 1, 0).getUniformNumber() == selfPerc.getUniformNumber()){ // se eu sou o player mais perto da trajetoria da bola
-						dash(point, 100);
+						dash(point, 90);
 //						try {
 //							Thread.sleep(100);
 //						} catch (InterruptedException e) {

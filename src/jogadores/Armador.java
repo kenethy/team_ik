@@ -106,11 +106,11 @@ public class Armador extends PlayerBase {
 				if (isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 					// e não vou receber a bola
 					if (selfPerc.getUniformNumber() == 4 && getPlayerRecebendo() != 4 && getPlayerRecebendo() != -1)
-						dash(new Vector2D(-10, 0), 70); // move para o meio de campo
+						dash(new Vector2D(-10 * side.value(), 0), 70); // move para o meio de campo
 					// se nao for camisa 4, é o camisa 5 armador
 					else if (selfPerc.getUniformNumber() == 5 && getPlayerRecebendo() != 5
 							&& getPlayerRecebendo() != -1)
-						dash(new Vector2D(10, 0), 70); // move para o meio de campo
+						dash(new Vector2D(10 * side.value(), 0), 70); // move para o meio de campo
 				}
 				// se estou perto da bola
 				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {

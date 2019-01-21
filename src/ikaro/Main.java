@@ -19,14 +19,26 @@ public class Main {
 			// so inverter a ordem para trocar os lados
 			//MainA1.main(args);
 			teamA.launchTeam();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			westHam.launchTeam();
 			//MainA1.main(args);
-			
-			
+
+
 		} else {
 			// so inverter a ordem para trocar os lados
 			//MainA1.main(args);
 			teamA.launchTeamAndServer();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			westHam.launchTeam();
 			//MainA1.main(args);
 

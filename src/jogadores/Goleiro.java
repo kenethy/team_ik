@@ -36,6 +36,7 @@ public class Goleiro extends PlayerBase {
 				//if (selfPerc.getPosition() != initPos) {
 				//System.out.println("GK" + selfPerc.getPosition());
 				commander.doMoveBlocking(initPos.getX(), initPos.getY());
+				commander.doMove(initPos.getX(), initPos.getY());
 				dash(initPos, 100);
 				//}
 				break;
@@ -69,7 +70,7 @@ public class Goleiro extends PlayerBase {
 					dash(ballPos, 100);
 					// TODO Colocar se a condição do goleiro for igual a da bola chutar
 					if(isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
-						turnToPoint(enemyGoal);
+						//turnToPoint(enemyGoal);
 						kickToPoint(enemyGoal, 85);
 					}
 					// Pode ser feito a verificação de um jogador proximo para receber a bola
@@ -113,17 +114,19 @@ public class Goleiro extends PlayerBase {
 						// Y do gol varia de -7 a 7
 						// na equação da reta, quando X for -50, qnt será Y? y – y0 = m (x – x0)
 						// -50 * sideValue para saber qual lado é meu gol
-						double y = ballPos1.getY() + (coefAng * ((-50 * side.value()) - ballPos.getX()));
+						double y = ballPos1.getY() + (coefAng * ((-51 * side.value()) - ballPos.getX()));
 						if (Double.isNaN(y) || Double.isInfinite(y))
 							y = 0;
-						Vector2D bolaNoGol = new Vector2D(-50 * side.value(), y);
+						Vector2D bolaNoGol = new Vector2D(-51 * side.value(), y);
 						if (bolaNoGol.getY() <= 7 && bolaNoGol.getY() >= -7) {
 							System.out.println("Bola no gol: " + bolaNoGol);
 							dash(bolaNoGol, 100);
 						}
 						// TODO verificar se chegou no dash
-						//if(isPointsAreClose(selfPerc.getPosition(), bolaNoGol, 1.2))
-						//	localState = 1;
+						if(isPointsAreClose(selfPerc.getPosition(), bolaNoGol, 1)){
+							turnToPoint(ballPos);
+							localState = 1;
+						}
 					}
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1.2)){ // se estiver perto da bola
 						System.out.println(selfPerc.getPosition().distanceTo(ballPos));
@@ -144,16 +147,13 @@ public class Goleiro extends PlayerBase {
 					//	dash(ballPos, 100);
 					//if(isPointsAreClose(selfPerc.getPosition(), ballPos, 1))
 					//commander.doCatchBlocking(selfPerc.getPosition().angleFrom(ballPos));
-					System.out.println("Angle from ballPos" + selfPerc.getPosition().angleFrom(ballPos));
-					commander.doCatchBlocking(selfPerc.getPosition().angleFrom(ballPos));
-					//					try {
-					//						Thread.sleep(100);
-					//					} catch (InterruptedException e) {
-					//						e.printStackTrace();
-					//					}
+					if(isPointsAreClose(selfPerc.getPosition(), ballPos, 1.2)){
+						System.out.println("Agarrou ");
+						kickToPoint(enemyGoal, 100);
+						//commander.doCatchBlocking(0);
+						
+					} //else kickToPoint(enemyGoal, 2);
 					turnToPoint(enemyGoal);
-					//kickToPoint(enemyGoal, 1);
-					//kickToPoint(enemyGoal, 2);
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1.2))
 						localState = 2;
 					else
@@ -176,14 +176,15 @@ public class Goleiro extends PlayerBase {
 					System.out.println("3Estado goleiro: " + localState + selfPerc.getTeam());
 					//dash(ballPos, 100);
 					System.out.println("Distancia goleiro para bola " + selfPerc.getPosition().distanceTo(ballPos));
+					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1.6)) {
+						//turnToPoint(enemyGoal);
+						localState = 1;
+						//kickToPoint(enemyGoal, 100);
+					}
 					if (area.contains(ballPos.getX(), ballPos.getY())) {
 						//turnToPoint(ballPos);
 						dash(ballPos, 100);
-						if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
-							//turnToPoint(enemyGoal);
-							localState = 1;
-							//kickToPoint(enemyGoal, 100);
-						}
+
 					} else {
 						dash(initPos, 100);
 						localState = -1;
