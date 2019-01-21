@@ -76,7 +76,7 @@ public class Defensor extends PlayerBase {
 				break;
 			case BEFORE_KICK_OFF:
 				//if (selfPerc.getPosition() != initPos) {
-					System.out.println("DF" + selfPerc.getPosition());
+					//System.out.println("DF" + selfPerc.getPosition());
 					commander.doMoveBlocking(initPos.getX(), initPos.getY());
 				//}
 				break;
@@ -90,11 +90,16 @@ public class Defensor extends PlayerBase {
 				break;
 			case PLAY_ON:
 				// POSSE DE BOLA
+				if (Mensagens.receiveMessage(selfPerc.getUniformNumber()).equals(trueBallPossession))
+					setBallPossession(true);
+				else if (Mensagens.receiveMessage(selfPerc.getUniformNumber()).equals(falseBallPossession))
+					setBallPossession(false);
 				if (isBallPossession()) { 
 					//System.out.println("posse de bola a favor");
 					// Posse de bola e realização de toques
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 						setBallPossession(true);
+						Mensagens.sendMessageAll(trueBallPossession);
 						if (selfPerc.getUniformNumber() == 2) {
 							// toca para o jogador 3
 							vTemp = fieldPerc.getTeamPlayer(side, 3).getPosition();
@@ -102,10 +107,10 @@ public class Defensor extends PlayerBase {
 							// toca para o jogador 4
 							vTemp = fieldPerc.getTeamPlayer(side, 4).getPosition();
 						}
-						Vector2D vTempF = vTemp.sub(selfPerc.getPosition());
-						double intensity = (vTempF.magnitude() * 100) / 40;
+						double intensity = 100 * (selfPerc.getPosition().distanceTo(vTemp) / 30);
 						kickToPoint(vTemp, intensity);
 						setBallPossession(false);
+						Mensagens.sendMessageAll(falseBallPossession);
 						// Sem a bola, caso esteja próximo ir ate a bola
 					} else {
 						pTemp = getClosestPlayerPoint(ballPos, side, 3, 0);
@@ -124,12 +129,12 @@ public class Defensor extends PlayerBase {
 					// SEM A POSSE DA BOLA
 					//System.out.println("Sem a posse da bola");
 					// Quando o ataque chegar perto do defensor
-					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 12)) {
+					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 17)) {
 						// ir ate a bola
 						dash(ballPos, 100);
 						// chutar em direcao ao gol
-						if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2) )
-							kickToPoint(new Vector2D(50 * side.value(), 0), 50);
+						if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1.5) )
+							kickToPoint(new Vector2D(52 * side.value(), 0), 50);
 					}
 				}
 				break;

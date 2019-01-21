@@ -14,27 +14,32 @@ public class PlayerBase {
 	public PlayerPerception selfPerc;
 	protected FieldPerception fieldPerc;
 	protected MatchPerception matchPerc;
-	public static boolean isBallPossession;
-	public static int playerRecebendo = -1;
+	protected int playerRecebendo = -1;
+	protected boolean ballPossession = false;
+	
+	//Mensagens
+	protected String trueBallPossession = "temos a bola";
+	protected String falseBallPossession = "perdemos a bola";
+	protected String passeParaVoce = "passe pra vc";
 
 	public PlayerBase(PlayerCommander player) {
 		commander = player;
 	}
 
-	public boolean isBallPossession() {
-		return isBallPossession;
+	protected boolean isBallPossession() {
+		return this.ballPossession;
 	}
 
-	public void setBallPossession(boolean isBallPossession) {
-		PlayerBase.isBallPossession = isBallPossession;
+	protected void setBallPossession(boolean ballPossession) {
+		this.ballPossession = ballPossession;
 	}
 
-	public static int getPlayerRecebendo() {
+	protected int getPlayerRecebendo() {
 		return playerRecebendo;
 	}
 
-	public static void setPlayerRecebendo(int playerRecebendo) {
-		PlayerBase.playerRecebendo = playerRecebendo;
+	protected void setPlayerRecebendo(int playerRecebendo) {
+		this.playerRecebendo = playerRecebendo;
 	}
 
 	public void updatePerceptions() {
@@ -191,7 +196,7 @@ public class PlayerBase {
 		PlayerPerception playerMaisProximo = getClosestPlayerPoint(ballPos, side, 2, 0);
 		PlayerPerception amigoMaisProximo = getClosestPlayerPoint(ballPos, side, 2, playerMaisProximo.getUniformNumber());
 		if (amigoMaisProximo.getUniformNumber() == selfPerc.getUniformNumber())
-			dash(ballPos, 70);
+			dash(ballPos, 60);
 		if (playerMaisProximo.getUniformNumber() == selfPerc.getUniformNumber()) { // se o player mais proximo sou eu
 			// corre ate a bola
 			dash(ballPos, 90);
@@ -200,8 +205,11 @@ public class PlayerBase {
 				dash(new Vector2D(selfPerc.getDirection().getX() + 2, selfPerc.getPosition().getY() + 2), 100);
 				// chuta para o amigo mais perto
 				turnToPoint(amigoMaisProximo.getPosition());
-				kickToPoint(amigoMaisProximo.getPosition(), 60);
+				double intensity = 100 * (selfPerc.getPosition().distanceTo(amigoMaisProximo.getPosition()) / 30);
+				System.out.println("Distancia do passe: " + selfPerc.getPosition().distanceTo(amigoMaisProximo.getPosition()) + " Intensidade: "+ intensity);
+				kickToPoint(amigoMaisProximo.getPosition(), intensity);
 				setPlayerRecebendo(amigoMaisProximo.getUniformNumber());
+				Mensagens.sendMessage(amigoMaisProximo.getUniformNumber(), passeParaVoce);
 			}
 		}
 		

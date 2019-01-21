@@ -28,13 +28,13 @@ public class Goleiro extends PlayerBase {
 			ballPos0 = fieldPerc.getBall().getPosition();
 			updatePerceptions();
 			ballPos = fieldPerc.getBall().getPosition();
-			
+
 			switch (matchPerc.getState()) {
-			
+
 			case BEFORE_KICK_OFF:
 				// posicao inicial
 				//if (selfPerc.getPosition() != initPos) {
-				System.out.println("GK" + selfPerc.getPosition());
+				//System.out.println("GK" + selfPerc.getPosition());
 				commander.doMoveBlocking(initPos.getX(), initPos.getY());
 				dash(initPos, 100);
 				//}
@@ -79,7 +79,7 @@ public class Goleiro extends PlayerBase {
 				if (side == EFieldSide.RIGHT) {
 					dash(new Vector2D(ballPos.getX(), ballPos.getY()), 100);
 					// TODO Colocar se a condição do goleiro for igual a da bola chutar
-					
+
 					turnToPoint(enemyGoal);
 					//Thread.sleep(1);
 					kickToPoint(enemyGoal, 85);
@@ -89,7 +89,7 @@ public class Goleiro extends PlayerBase {
 				// System.out.println(ballPos.angleFrom(selfPerc.getPosition()));
 
 				switch (localState) {
-				
+
 				case -1: //ir para posição inicial
 					if(isPointsAreClose(selfPerc.getPosition(), initPos, 2)){
 						turnToPoint(ballPos);
@@ -100,9 +100,9 @@ public class Goleiro extends PlayerBase {
 					break;
 
 				case 0: // posicionar para receber a bola
-					System.out.println("Estado goleiro: " + localState + selfPerc.getTeam());
+					//System.out.println("Estado goleiro: " + localState + selfPerc.getTeam());
 					ballPos1 = ballPos;
-					if (area.contains(ballPos.getX(), ballPos.getY())) 
+					if (area.contains(ballPos.getX(), ballPos.getY()) && getClosestPlayerPoint(ballPos, side, 1, 0).getUniformNumber() == selfPerc.getUniformNumber()) 
 						localState = 3;
 
 					if ((side == EFieldSide.LEFT && ballPos.getX() < -15)
@@ -138,18 +138,19 @@ public class Goleiro extends PlayerBase {
 					// verificar esse caso pois é o 3, o 3, não está funcionando
 					//while(!isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 					//if (!isPointsAreClose(selfPerc.getPosition(), ballPos, 2))
-						//dash(ballPos); // aguardar a bola chegar até ele
+					//dash(ballPos); // aguardar a bola chegar até ele
 					//}
 					//if(isPointsAreClose(selfPerc.getPosition(), ballPos, 10))
 					//	dash(ballPos, 100);
 					//if(isPointsAreClose(selfPerc.getPosition(), ballPos, 1))
-						//commander.doCatchBlocking(selfPerc.getPosition().angleFrom(ballPos));
-					commander.doCatchBlocking(0);
-//					try {
-//						Thread.sleep(100);
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
+					//commander.doCatchBlocking(selfPerc.getPosition().angleFrom(ballPos));
+					System.out.println("Angle from ballPos" + selfPerc.getPosition().angleFrom(ballPos));
+					commander.doCatchBlocking(selfPerc.getPosition().angleFrom(ballPos));
+					//					try {
+					//						Thread.sleep(100);
+					//					} catch (InterruptedException e) {
+					//						e.printStackTrace();
+					//					}
 					turnToPoint(enemyGoal);
 					//kickToPoint(enemyGoal, 1);
 					//kickToPoint(enemyGoal, 2);
@@ -164,7 +165,7 @@ public class Goleiro extends PlayerBase {
 					// Enquanto a bola estiver perto dele chutar
 					//while(isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) { //tirei pois ele ficava parado no estado 2 e nao fazia mais nada
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1))
-						kickToPoint(enemyGoal, 85);
+						kickToPoint(enemyGoal, 100);
 					//}
 					else
 						localState = 3;
@@ -172,18 +173,20 @@ public class Goleiro extends PlayerBase {
 					break;
 
 				case 3: // perseguir a bola na minha area
-					System.out.println("Estado goleiro: " + localState + selfPerc.getTeam());
-					dash(ballPos, 100);
+					System.out.println("3Estado goleiro: " + localState + selfPerc.getTeam());
+					//dash(ballPos, 100);
+					System.out.println("Distancia goleiro para bola " + selfPerc.getPosition().distanceTo(ballPos));
 					if (area.contains(ballPos.getX(), ballPos.getY())) {
 						//turnToPoint(ballPos);
 						dash(ballPos, 100);
 						if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 							//turnToPoint(enemyGoal);
-							kickToPoint(enemyGoal, 100);
+							localState = 1;
+							//kickToPoint(enemyGoal, 100);
 						}
 					} else {
 						dash(initPos, 100);
-						localState = 0;
+						localState = -1;
 					}
 					break;
 

@@ -82,16 +82,27 @@ public class Armador extends PlayerBase {
 				break;
 			case KICK_OFF_LEFT: 
 				setPlayerRecebendo(-1);
+				Mensagens.sendMessage(selfPerc.getUniformNumber(), "-1");
 				correrEChutar(ballPos,side);
 				break;
 			case KICK_OFF_RIGHT: 
 				setPlayerRecebendo(-1);
+				Mensagens.sendMessage(selfPerc.getUniformNumber(), "-1");
 				correrEChutar(ballPos,side);
 				break;
 			case PLAY_ON:
 				//System.out.println("recebendo: " + getPlayerRecebendo());
+				//Mensagens
+				if (Mensagens.receiveMessage(selfPerc.getUniformNumber()).equals(trueBallPossession))
+					setBallPossession(true);
+				else if (Mensagens.receiveMessage(selfPerc.getUniformNumber()).equals(falseBallPossession))
+					setBallPossession(false);
 				
+				if (Mensagens.receiveMessage(selfPerc.getUniformNumber()).equals(passeParaVoce))
+					setPlayerRecebendo(selfPerc.getUniformNumber());
 				// se o time esta com a bola, mas EU não estou com ela
+				
+				
 				if (isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 					// e não vou receber a bola
 					if (selfPerc.getUniformNumber() == 4 && getPlayerRecebendo() != 4 && getPlayerRecebendo() != -1)
@@ -104,7 +115,9 @@ public class Armador extends PlayerBase {
 				// se estou perto da bola
 				if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 					setBallPossession(true); // setar que o nosso time esta com a bola
-					setPlayerRecebendo(-1); // ninguém esta marcado para receber a bola					
+					Mensagens.sendMessageAll(trueBallPossession);
+					setPlayerRecebendo(-1); // ninguém esta marcado para receber a bola			
+					Mensagens.sendMessage(selfPerc.getUniformNumber(), "-1");
 
 					// toca para o atacante mais perto
 					double dist1 = Vector2D.distance(selfPerc.getPosition(),
@@ -117,18 +130,21 @@ public class Armador extends PlayerBase {
 							: fieldPerc.getTeamPlayer(selfPerc.getSide(), 6).getPosition();
 					if (dist1 > dist2) {
 						setPlayerRecebendo(7);
+						Mensagens.sendMessage(7, passeParaVoce);
 						vTemp = fieldPerc.getTeamPlayer(selfPerc.getSide(), 7).getPosition();
 					} else {
 						setPlayerRecebendo(6);
+						Mensagens.sendMessage(6, passeParaVoce);
 						vTemp = fieldPerc.getTeamPlayer(selfPerc.getSide(), 6).getPosition();
 					}
 					//turnToPoint(vTemp);
 					//Vector2D vTempF = vTemp.sub(selfPerc.getPosition());
-					double intensity = (100 * (vTemp.distanceTo(vTemp) - 1 / (50)));
+					double intensity = 100 * (selfPerc.getPosition().distanceTo(vTemp) / 40);
 					System.out.println("Distancia do passe: " + selfPerc.getPosition().distanceTo(vTemp) + " Intensidade: "+ intensity);
 					//System.out.println(vTemp.magnitude() + "*100/40 = "+ vTemp.magnitude()*100/40);
 					kickToPoint(vTemp, intensity);
 					setBallPossession(false);
+					Mensagens.sendMessageAll(falseBallPossession);
 
 				} else { // se não estou perto da bola, corre até ela
 					pTemp = getClosestPlayerPoint(ballPos, side, 3, 0);

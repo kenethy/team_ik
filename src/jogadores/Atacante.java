@@ -1,7 +1,6 @@
 package jogadores;
 
 import simple_soccer_lib.PlayerCommander;
-import simple_soccer_lib.perception.PlayerPerception;
 import simple_soccer_lib.utils.EFieldSide;
 import simple_soccer_lib.utils.Vector2D;
 
@@ -17,7 +16,7 @@ public class Atacante extends PlayerBase {
 		double xInit = -15, yInit = 0 + pos;
 		EFieldSide side = selfPerc.getSide();
 		Vector2D initPos = new Vector2D(xInit * side.value(), yInit);
-		Vector2D goalPos = new Vector2D(50 * side.value(), 0);
+		Vector2D goalPos = new Vector2D(52 * side.value(), 3);
 		Vector2D ballPos;
 		//PlayerPerception pTemp;
 		while (true) {
@@ -84,14 +83,24 @@ public class Atacante extends PlayerBase {
 				break;
 			case KICK_OFF_LEFT: 
 				setPlayerRecebendo(-1);
+				Mensagens.sendMessage(selfPerc.getUniformNumber(), "-1");
 				correrEChutar(ballPos,side);
 				break;
 			case KICK_OFF_RIGHT: 
 				setPlayerRecebendo(-1);
+				Mensagens.sendMessage(selfPerc.getUniformNumber(), "-1");
 				correrEChutar(ballPos,side);
 				break;
 			case PLAY_ON:
-				String playerRecebendo ;
+				//mensagens
+				if (Mensagens.receiveMessage(selfPerc.getUniformNumber()).equals(trueBallPossession))
+					setBallPossession(true);
+				else if (Mensagens.receiveMessage(selfPerc.getUniformNumber()).equals(falseBallPossession))
+					setBallPossession(false);
+				
+				if (Mensagens.receiveMessage(selfPerc.getUniformNumber()).equals(passeParaVoce))
+					setPlayerRecebendo(selfPerc.getUniformNumber());
+				
 				switch (localState){
 				
 				case -1: //ir para posição inicial
@@ -99,23 +108,26 @@ public class Atacante extends PlayerBase {
 						turnToPoint(ballPos);
 						localState = 0;
 					} else {
-						dash(initPos, 100);
+						dash(initPos, 70);
 					}
 					break;
 				
-				case 0:  //posicao inicial
-					System.out.println("Atacante "+ selfPerc.getUniformNumber() + " " + selfPerc.getTeam() + " " + localState);
-					dash(initPos, 80);
-					// se estou na minha posição inicial ou sou o player mais perto
-					if (isPointsAreClose(selfPerc.getPosition(), initPos, 1) 
-							|| getClosestPlayerPoint(ballPos, side, 1, 0).getUniformNumber() == selfPerc.getUniformNumber()) 
+				case 0:  //posicionamento
+					//System.out.println("Atacante "+ selfPerc.getUniformNumber() + " " + selfPerc.getTeam() + " " + localState);
+					if (isBallPossession()) //se estamos com a posse de bola, 
+						dash(new Vector2D(ballPos.getX() + 10 * side.value(), -15), 70); // acompanha o amigo
+						//dash(initPos, 80);
+					else
+						localState = -1;
+					// se sou o player mais perto da bola
+					if (getClosestPlayerPoint(ballPos, side, 1, 0).getUniformNumber() == selfPerc.getUniformNumber()) 
 						localState = 1;
 					else
 						localState = 0;
 					break;
 				case 1: //interceptar a bola
 
-					System.out.println("Atacante "+ selfPerc.getUniformNumber() + " " + selfPerc.getTeam() + " " + localState);
+					//System.out.println("Atacante "+ selfPerc.getUniformNumber() + " " + selfPerc.getTeam() + " " + localState);
 					//playerRecebendo = Mensagens.receiveMessage(selfPerc.getUniformNumber());
 					//String ballPossession = ;
 					//if (playerRecebendo != null && playerRecebendo.equals(String.valueOf(selfPerc.getUniformNumber()))) //se o player recebendo sou eu
@@ -148,9 +160,8 @@ public class Atacante extends PlayerBase {
 					
 				case 2: //receber a bola
 
-					System.out.println("Atacante "+ selfPerc.getUniformNumber() + " " + selfPerc.getTeam() + " " + localState);
-					playerRecebendo = Mensagens.receiveMessage(selfPerc.getUniformNumber());
-					if (playerRecebendo.equals(String.valueOf(selfPerc.getUniformNumber()))) //se o player recebendo sou eu, corre atras da bola
+					//System.out.println("Atacante "+ selfPerc.getUniformNumber() + " " + selfPerc.getTeam() + " " + localState);
+					if (getPlayerRecebendo() == selfPerc.getUniformNumber()) //se o player recebendo sou eu, corre atras da bola
 						dash(ballPos, 85);
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1))
 						localState = 3;
@@ -158,10 +169,12 @@ public class Atacante extends PlayerBase {
 					
 				case 3: //ir em direção ao gol adversario
 
-					System.out.println("Atacante "+ selfPerc.getUniformNumber() + " " + selfPerc.getTeam() + " " + localState);
+					//System.out.println("Atacante "+ selfPerc.getUniformNumber() + " " + selfPerc.getTeam() + " " + localState);
 					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1)){
 						setBallPossession(true);
+						Mensagens.sendMessageAll(trueBallPossession);
 						setPlayerRecebendo(-1);
+						Mensagens.sendMessage(selfPerc.getUniformNumber(), "-1");
 						//turnToPoint(goalPos);
 						kickToPoint(goalPos, 25);
 					}else 
@@ -171,12 +184,13 @@ public class Atacante extends PlayerBase {
 					break;
 					
 				case 4: //chutar em direção ao gol
-					System.out.println("Atacante "+ selfPerc.getUniformNumber() + " " + selfPerc.getTeam() + " " + localState);
-					if (isPointsAreClose(ballPos, goalPos, 30) && isPointsAreClose(selfPerc.getPosition(), ballPos, 1)){ 
+					//System.out.println("Atacante "+ selfPerc.getUniformNumber() + " " + selfPerc.getTeam() + " " + localState);
+					if (isPointsAreClose(selfPerc.getPosition(), ballPos, 1.5)){ 
 						kickToPoint(goalPos, 100);
 						setBallPossession(false);
+						Mensagens.sendMessageAll(falseBallPossession);
 					}else
-						localState = 1;
+						localState = 3;
 					break;
 				}
 //				// se o time esta com a bola, mas EU NÃO estou com ela
