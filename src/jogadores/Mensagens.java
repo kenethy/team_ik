@@ -2,19 +2,20 @@ package jogadores;
 
 public class Mensagens {
 
-	String msg[] = new String[7];
+	static String msgs[] = new String[7];
+	//static String msgs[] = new String[7];
 
-	public void sendMessage(int agent, String msg) {
-		this.msg[agent] = msg;
+	public static void sendMessage(int agent, String msg) {
+		msgs[agent-1] = msg;
 	}
 
-	public void sendMessageAll(int agent, String msg) {
-		for (int i = 0; i < this.msg.length; i++) {
-			this.msg[i] = msg;
+	public static void sendMessageAll(int agent, String msg) {
+		for (int i = 0; i < msgs.length; i++) {
+			msgs[i-1] = msg;
 		}
 	}
 
-	public String receiveMessage(int agent) {
-		return msg[agent];
+	public static String receiveMessage(int agent) {
+		return msgs[agent-1];
 	}
 }

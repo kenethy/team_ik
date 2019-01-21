@@ -59,6 +59,7 @@ public class PlayerBase {
 			return;
 		if (!isAlignToPoint(point, 15))
 			turnToPoint(point);
+		//commander.doMove(x, y)
 		commander.doDashBlocking(speed);
 	}
 
@@ -83,6 +84,49 @@ public class PlayerBase {
 
 	//ignoreUniform para que a função ignore o uniforme passado como parametro. Se for 0, não irá ignorar nenhum
 	protected PlayerPerception getClosestPlayerPoint(Vector2D point, EFieldSide side, double margin, int ignoreUniform) {
+		ArrayList<PlayerPerception> lp = fieldPerc.getTeamPlayers(side);
+		PlayerPerception np = null;
+		if (lp != null && !lp.isEmpty()) {
+			double dist=0, temp;
+			dist = lp.get(0).getPosition().distanceTo(point);
+			np = lp.get(0);
+
+			if (isPointsAreClose(np.getPosition(), point, margin))
+				return np;
+			for (PlayerPerception p : lp) {
+				if (p.getUniformNumber() != ignoreUniform){
+					if (p.getPosition() == null)
+						break;
+					if (isPointsAreClose(p.getPosition(), point, margin))
+						return p;
+					temp = p.getPosition().distanceTo(point);
+					if (temp < dist) {
+						dist = temp;
+						np = p;
+					}
+				}
+			}
+		}
+		return np;
+	}
+	
+	protected PlayerPerception getClosestPlayerBallTrajeto(EFieldSide side, double margin, int ignoreUniform) {
+		Vector2D point1 = fieldPerc.getBall().getPosition();
+		try {
+			Thread.sleep(100); } catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		Vector2D point2 = fieldPerc.getBall().getPosition();
+		
+		//double coefAng = Math.round(point2.getY() - point1.getY()) / (point2.getX() - point1.getX());
+		double x = point2.getX() + (point2.getX() - point1.getX());//point2.getX() + (coefAng * (point2.getX() - point1.getX()));
+		double y = point2.getY() + (point2.getY() - point1.getY()); //point2.getY() + (coefAng * (point2.getX() - point1.getX()));
+		Vector2D point = new Vector2D(x, y); // novo ponto para calcular trajetoria
+		System.out.println("\n");
+		System.out.println("Point 2" + point2);
+		System.out.println("Point 1" + point1);
+		System.out.println("Ponto trajetoria: " + point);
+		System.out.println("\n");
 		ArrayList<PlayerPerception> lp = fieldPerc.getTeamPlayers(side);
 		PlayerPerception np = null;
 		if (lp != null && !lp.isEmpty()) {
@@ -153,6 +197,7 @@ public class PlayerBase {
 			dash(ballPos, 90);
 			// se estou na posicao da bola
 			if (isPointsAreClose(selfPerc.getPosition(), ballPos, 2)) {
+				dash(new Vector2D(selfPerc.getDirection().getX() + 2, selfPerc.getPosition().getY() + 2), 100);
 				// chuta para o amigo mais perto
 				turnToPoint(amigoMaisProximo.getPosition());
 				kickToPoint(amigoMaisProximo.getPosition(), 60);

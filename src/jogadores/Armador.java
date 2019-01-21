@@ -15,7 +15,7 @@ public class Armador extends PlayerBase {
 	public void acaoArmador(long nextIteration, int pos) {
 		double xInit = -30 + pos, yInit = 0;
 		EFieldSide side = selfPerc.getSide();
-		Vector2D initPos = new Vector2D(xInit * side.value(), yInit * side.value());
+		Vector2D initPos = new Vector2D(xInit * side.value(), yInit);
 		Vector2D ballPos, vTemp;
 		PlayerPerception pTemp;
 		while (true) {
@@ -65,24 +65,32 @@ public class Armador extends PlayerBase {
 				break;
 			case CORNER_KICK_LEFT:
 				if (side == EFieldSide.LEFT){
-					// Posicionar um jogador dentro da area e tocar para ele
 					correrEChutar(ballPos, side);
 				}
 				break;
 			case CORNER_KICK_RIGHT:
 				if (side == EFieldSide.RIGHT){
-					// Posicionar um jogador dentro da area e tocar para ele
-					
 					correrEChutar(ballPos, side);
 				}
 				break;
 			case BEFORE_KICK_OFF:
-				commander.doMoveBlocking(xInit * side.value(), yInit * side.value());
+				//System.out.println(initPos);
+				if (selfPerc.getPosition() != initPos){
+					commander.doMoveBlocking(initPos.getX(), initPos.getY());
+					dash(initPos, 100);
+				}
 				break;
-			case KICK_OFF_LEFT: setPlayerRecebendo(-1);
-			case KICK_OFF_RIGHT: setPlayerRecebendo(-1);
+			case KICK_OFF_LEFT: 
+				setPlayerRecebendo(-1);
+				correrEChutar(ballPos,side);
+				break;
+			case KICK_OFF_RIGHT: 
+				setPlayerRecebendo(-1);
+				correrEChutar(ballPos,side);
+				break;
 			case PLAY_ON:
 				//System.out.println("recebendo: " + getPlayerRecebendo());
+				
 				// se o time esta com a bola, mas EU não estou com ela
 				if (isBallPossession() && !isPointsAreClose(selfPerc.getPosition(), ballPos, 1)) {
 					// e não vou receber a bola
@@ -104,7 +112,7 @@ public class Armador extends PlayerBase {
 					double dist2 = Vector2D.distance(selfPerc.getPosition(),
 							fieldPerc.getTeamPlayer(selfPerc.getSide(), 7).getPosition());
 
-					// pega o player mais perto
+					// pega o atacante mais perto
 					vTemp = dist1 > dist2 ? fieldPerc.getTeamPlayer(selfPerc.getSide(), 7).getPosition()
 							: fieldPerc.getTeamPlayer(selfPerc.getSide(), 6).getPosition();
 					if (dist1 > dist2) {
@@ -114,9 +122,10 @@ public class Armador extends PlayerBase {
 						setPlayerRecebendo(6);
 						vTemp = fieldPerc.getTeamPlayer(selfPerc.getSide(), 6).getPosition();
 					}
-					turnToPoint(vTemp);
+					//turnToPoint(vTemp);
 					//Vector2D vTempF = vTemp.sub(selfPerc.getPosition());
-					double intensity = (vTemp.magnitude() * 100) / 40;
+					double intensity = (100 * (vTemp.distanceTo(vTemp) - 1 / (50)));
+					System.out.println("Distancia do passe: " + selfPerc.getPosition().distanceTo(vTemp) + " Intensidade: "+ intensity);
 					//System.out.println(vTemp.magnitude() + "*100/40 = "+ vTemp.magnitude()*100/40);
 					kickToPoint(vTemp, intensity);
 					setBallPossession(false);

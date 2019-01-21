@@ -15,14 +15,20 @@ public class Main {
 		// se não, lança o time e o servidor
 		if (isProcessRunning()) {
 			// so inverter a ordem para trocar os lados
-			westHam.launchTeam();
-			teamA.launchTeam();
 			//MainA1.main(args);
+			teamA.launchTeam();
+			westHam.launchTeam();
+			//MainA1.main(args);
+			
+			
 		} else {
 			// so inverter a ordem para trocar os lados
+			//MainA1.main(args);
+			teamA.launchTeamAndServer();
 			westHam.launchTeamAndServer();
-			teamA.launchTeam();
-		//	MainA1.main(args);
+			//MainA1.main(args);
+			
+			
 
 		}
 

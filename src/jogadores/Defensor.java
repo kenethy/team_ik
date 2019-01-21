@@ -15,7 +15,7 @@ public class Defensor extends PlayerBase {
 	public void acaoDefensor(long nextIteration, int pos) {
 		double xInit = -30, yInit = 0 + pos;
 		EFieldSide side = selfPerc.getSide();
-		Vector2D initPos = new Vector2D(xInit * side.value(), yInit * side.value());
+		Vector2D initPos = new Vector2D(xInit * side.value(), yInit);
 		Vector2D ballPos, vTemp;
 		PlayerPerception pTemp;
 
@@ -75,10 +75,18 @@ public class Defensor extends PlayerBase {
 				}
 				break;
 			case BEFORE_KICK_OFF:
-				commander.doMoveBlocking(xInit * side.value(), yInit * side.value());
+				//System.out.println(initPos);
+				if (selfPerc.getPosition() != initPos)
+					commander.doMoveBlocking(initPos.getX(), initPos.getY());
 				break;
-			case KICK_OFF_LEFT: setPlayerRecebendo(-1);
-			case KICK_OFF_RIGHT: setPlayerRecebendo(-1);
+			case KICK_OFF_LEFT:
+				setPlayerRecebendo(-1);
+				correrEChutar(ballPos,side);
+				break;
+			case KICK_OFF_RIGHT:
+				setPlayerRecebendo(-1);
+				correrEChutar(ballPos,side);
+				break;
 			case PLAY_ON:
 				// POSSE DE BOLA
 				if (isBallPossession()) { 
